@@ -7,16 +7,28 @@
     android:layout_margin="@dimen/dimen_8dp">
 
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/title"
         style="@style/TitleTextStyle"
         android:layout_width="@dimen/dimen_0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/titleTextView"
+        app:layout_constraintBottom_toTopOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cardView"
         app:layout_constraintTop_toTopOf="@id/cardView"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Title" />
+
+    <TextView
+        android:id="@+id/overview"
+        style="@style/SubtitleTextStyle"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        app:layout_constraintBottom_toBottomOf="@id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="Overview" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -28,7 +40,7 @@
         android:elevation="@dimen/dimen_0dp"
         app:cardCornerRadius="@dimen/dimen_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/titleTextView"
+        app:layout_constraintEnd_toStartOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -37,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
-            android:scaleType="center" />
+            android:scaleType="centerCrop" />
 
     </androidx.cardview.widget.CardView>
 

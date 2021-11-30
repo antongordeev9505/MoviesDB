@@ -1,5 +1,6 @@
 package com.example.moviesdb.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -15,6 +16,10 @@ class PopularMoviesAdapter() :
     ListAdapter<Movie, PopularMoviesAdapter.PopularMoviesViewHolder>(
         PopularMoviesComparator()
     ) {
+
+    companion object {
+        const val POSTER_IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w300"
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
@@ -36,10 +41,11 @@ class PopularMoviesAdapter() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.apply {
-                titleTextView.text = movie.original_title
+                title.text = movie.original_title
+                overview.text = movie.overview
 
-                Glide.with(itemView)
-                    .load(movie.poster_path)
+                Glide.with(itemView.context)
+                    .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
                     .centerCrop()
                     .placeholder(R.drawable.ic_baseline_image_24)
                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -51,12 +57,10 @@ class PopularMoviesAdapter() :
 
     class PopularMoviesComparator : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
-            oldItem.original_title == newItem.original_title
+            oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
             oldItem == newItem
     }
-
-
 }
 

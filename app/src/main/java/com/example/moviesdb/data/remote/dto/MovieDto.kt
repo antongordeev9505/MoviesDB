@@ -22,7 +22,8 @@ data class MovieDto(
         return MovieEntity(
             id = id,
             original_title = original_title,
-            poster_path = poster_path
+            poster_path = poster_path,
+            overview = overview
         )
     }
 }

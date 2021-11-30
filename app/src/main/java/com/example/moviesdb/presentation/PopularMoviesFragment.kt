@@ -24,7 +24,6 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         popularMoviesViewModel = ViewModelProvider(requireActivity()).get(PopularMoviesViewModel::class.java)
-        Log.d("proverka", "fragment launched")
 
 
         _binding = FragmentPopularMoviesBinding.bind(view)
@@ -37,12 +36,12 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
     }
 
     private fun initObserver() {
-        popularMoviesViewModel.getMovies().observe(this as LifecycleOwner, Observer {
+        popularMoviesViewModel.getPopularMovies().observe(this as LifecycleOwner, Observer {
             adapter.submitList(it.data)
             when(it) {
                 is Resource.Success -> {
                     Log.d("proverka", "Success")
-
+                    Toast.makeText(activity, "обновилось", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
                     Log.d("proverka", "Loading")
@@ -50,6 +49,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                 }
                 is Resource.Error -> {
                     Log.d("proverka", "Error")
+                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
                 }
                 else -> Unit
             }
@@ -60,6 +60,4 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

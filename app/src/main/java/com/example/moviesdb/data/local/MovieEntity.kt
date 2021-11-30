@@ -8,12 +8,15 @@ import com.example.moviesdb.domain.model.Movie
 data class MovieEntity(
     @PrimaryKey val id: Int,
     val original_title: String,
-    val poster_path: String
+    val poster_path: String,
+    val overview: String
 ) {
     fun toMovie(): Movie {
         return Movie(
+            id = id,
             original_title = original_title,
-            poster_path = poster_path
+            poster_path = poster_path,
+            overview = overview
         )
     }
 }
