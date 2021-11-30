@@ -37,22 +37,22 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     private fun initObserver() {
         popularMoviesViewModel.getPopularMovies().observe(this as LifecycleOwner, Observer {
-            adapter.submitList(it.data)
-            when(it) {
-                is Resource.Success -> {
-                    Log.d("proverka", "Success")
-                    Toast.makeText(activity, "обновилось", Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Loading -> {
-                    Log.d("proverka", "Loading")
-
-                }
-                is Resource.Error -> {
-                    Log.d("proverka", "Error")
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                }
-                else -> Unit
-            }
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+//            when(it) {
+//                is Resource.Success -> {
+//                    Log.d("proverka", "Success")
+//                    Toast.makeText(activity, "обновилось", Toast.LENGTH_SHORT).show()
+//                }
+//                is Resource.Loading -> {
+//                    Log.d("proverka", "Loading")
+//
+//                }
+//                is Resource.Error -> {
+//                    Log.d("proverka", "Error")
+//                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+//                }
+//                else -> Unit
+//            }
         })
     }
 

@@ -1,9 +1,12 @@
 package com.example.moviesdb.data.repository
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.room.withTransaction
 import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.data.remote.MoviesDbApi
+import com.example.moviesdb.data.remote.PagingSource
 import com.example.moviesdb.domain.repository.PopularMoviesRepository
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.util.Resource
@@ -19,38 +22,83 @@ class PopularMoviesRepositoryImpl(
 
     private val dao = db.dao
 
-    override fun getAllPopularMovies(): Flow<Resource<List<Movie>>> = flow {
-        emit(Resource.Loading())
+//    override fun getAllPopularMovies(): Flow<Resource<List<Movie>>> = flow {
+//        emit(Resource.Loading())
+//
+//        val popularMovies = dao.getAllPopularMovies().map { it.toMovie() }
+//        emit(Resource.Loading(data = popularMovies))
+//
+//        try {
+//            val remotePopularMovies = api.getPopularMovies()
+//
+//            db.withTransaction {
+//                dao.deleteAllMovies()
+//                dao.insertMovies(remotePopularMovies.results.map {
+//                    it.toMovieEntity()
+//                })
+//            }
+//
+//            val newPopularMovies = dao.getAllPopularMovies().map {
+//                it.toMovie()
+//            }
+//            emit(Resource.Success(newPopularMovies))
+//
+//        } catch (error: HttpException) {
+//            emit(Resource.Error(
+//                message = error.toString(),
+//                data = popularMovies
+//            ))
+//
+//        } catch (error: IOException) {
+//            emit(Resource.Error(
+//                message = error.toString(),
+//                data = popularMovies
+//            ))
+//        }
+//    }
 
-        val popularMovies = dao.getAllPopularMovies().map { it.toMovie() }
-        emit(Resource.Loading(data = popularMovies))
+    override fun getAllPopularMovies() =
 
-        try {
-            val remotePopularMovies = api.getPopularMovies()
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 100,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { PagingSource(api, db) }
 
-            db.withTransaction {
-                dao.deleteAllMovies()
-                dao.insertMovies(remotePopularMovies.results.map {
-                    it.toMovieEntity()
-                })
-            }
+        ).flow
+//        emit(Resource.Loading())
+//
+//        val popularMovies = dao.getAllPopularMovies().map { it.toMovie() }
+//        emit(Resource.Loading(data = popularMovies))
+//
+//        try {
+//            val remotePopularMovies = api.getPopularMovies()
+//
+//            db.withTransaction {
+//                dao.deleteAllMovies()
+//                dao.insertMovies(remotePopularMovies.results.map {
+//                    it.toMovieEntity()
+//                })
+//            }
+//
+//            val newPopularMovies = dao.getAllPopularMovies().map {
+//                it.toMovie()
+//            }
+//            emit(Resource.Success(newPopularMovies))
+//
+//        } catch (error: HttpException) {
+//            emit(Resource.Error(
+//                message = error.toString(),
+//                data = popularMovies
+//            ))
+//
+//        } catch (error: IOException) {
+//            emit(Resource.Error(
+//                message = error.toString(),
+//                data = popularMovies
+//            ))
+//        }
 
-            val newPopularMovies = dao.getAllPopularMovies().map {
-                it.toMovie()
-            }
-            emit(Resource.Success(newPopularMovies))
-
-        } catch (error: HttpException) {
-            emit(Resource.Error(
-                message = error.toString(),
-                data = popularMovies
-            ))
-
-        } catch (error: IOException) {
-            emit(Resource.Error(
-                message = error.toString(),
-                data = popularMovies
-            ))
-        }
-    }
 }

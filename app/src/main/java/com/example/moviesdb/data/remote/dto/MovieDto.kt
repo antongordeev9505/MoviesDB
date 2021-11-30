@@ -1,6 +1,7 @@
 package com.example.moviesdb.data.remote.dto
 
 import com.example.moviesdb.data.local.MovieEntity
+import com.example.moviesdb.domain.model.Movie
 
 data class MovieDto(
     val adult: Boolean,
@@ -20,6 +21,15 @@ data class MovieDto(
 ) {
     fun toMovieEntity(): MovieEntity {
         return MovieEntity(
+            id = id,
+            original_title = original_title,
+            poster_path = poster_path,
+            overview = overview
+        )
+    }
+
+    fun toMovie(): Movie {
+        return Movie(
             id = id,
             original_title = original_title,
             poster_path = poster_path,
