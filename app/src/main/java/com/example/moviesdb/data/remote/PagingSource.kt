@@ -1,7 +1,9 @@
 package com.example.moviesdb.data.remote
 
+import android.util.Log
 import com.example.moviesdb.data.remote.dto.MovieDto
 import androidx.paging.PagingSource
+import androidx.room.withTransaction
 import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.domain.model.Movie
 import retrofit2.HttpException
@@ -27,13 +29,11 @@ class PagingSource(private val api: MoviesDbApi, private val db: MoviesDbDatabas
                 nextKey = if (movies.isEmpty()) null else position + 1
             )
         } catch (error: IOException) {
+            Log.d("proverka", "no internet")
             LoadResult.Error(error)
 
         } catch (error: HttpException) {
             LoadResult.Error(error)
         }
     }
-
-
-
 }
