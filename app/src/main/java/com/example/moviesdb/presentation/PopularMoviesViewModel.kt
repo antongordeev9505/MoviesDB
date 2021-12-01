@@ -22,7 +22,7 @@ class PopularMoviesViewModel @Inject constructor(
 //        )
 //    }
 
-    fun getPopularMovies(): LiveData<PagingData<MovieEntity>> = liveData {
+    fun getPopularMovies(): LiveData<PagingData<Movie>> = liveData {
         emitSource(
             getPopularMovies.invoke().cachedIn(viewModelScope).asLiveData()
         )

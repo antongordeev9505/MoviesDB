@@ -27,10 +27,9 @@ object AppModule {
     @Provides
     @Singleton
     fun providePopularMoviesRepository(
-        db: MoviesDbDatabase,
         api: MoviesDbApi
     ): PopularMoviesRepository {
-        return PopularMoviesRepositoryImpl(api, db)
+        return PopularMoviesRepositoryImpl(api)
     }
 
     @Provides

@@ -8,7 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PopularMoviesRepository {
 
-//    fun getAllPopularMovies(): Flow<Resource<List<Movie>>>
-        fun getAllPopularMovies(): Flow<PagingData<MovieEntity>>
-
+    fun getAllPopularMovies(): Flow<PagingData<Movie>>
 }

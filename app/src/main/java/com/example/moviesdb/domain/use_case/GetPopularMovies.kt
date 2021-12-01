@@ -9,9 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 class GetPopularMovies(private val repository: PopularMoviesRepository) {
 
-//    operator fun invoke(): Flow<Resource<List<Movie>>> =
-//        repository.getAllPopularMovies()
-
-    operator fun invoke(): Flow<PagingData<MovieEntity>> =
+    operator fun invoke(): Flow<PagingData<Movie>> =
         repository.getAllPopularMovies()
 }

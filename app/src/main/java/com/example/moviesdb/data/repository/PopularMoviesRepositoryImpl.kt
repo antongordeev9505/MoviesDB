@@ -1,130 +1,24 @@
 package com.example.moviesdb.data.repository
 
-import android.util.Log
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.room.withTransaction
-import com.example.moviesdb.data.local.MovieEntity
-import com.example.moviesdb.data.local.MoviesDbDatabase
-import com.example.moviesdb.data.remote.MovieRemoteMediator
 import com.example.moviesdb.data.remote.MoviesDbApi
+import com.example.moviesdb.data.remote.PagingSource
 import com.example.moviesdb.domain.repository.PopularMoviesRepository
-import com.example.moviesdb.domain.model.Movie
-import com.example.moviesdb.util.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
 
 class PopularMoviesRepositoryImpl(
-    private val api: MoviesDbApi,
-    private val db: MoviesDbDatabase
+    private val api: MoviesDbApi
 ) : PopularMoviesRepository {
 
-    private val dao = db.dao
+    override fun getAllPopularMovies() =
 
-//    override fun getAllPopularMovies(): Flow<Resource<List<Movie>>> = flow {
-//        emit(Resource.Loading())
-//
-//        val popularMovies = dao.getAllPopularMovies().map { it.toMovie() }
-//        emit(Resource.Loading(data = popularMovies))
-//
-//        try {
-//            val remotePopularMovies = api.getPopularMovies()
-//
-//            db.withTransaction {
-//                dao.deleteAllMovies()
-//                dao.insertMovies(remotePopularMovies.results.map {
-//                    it.toMovieEntity()
-//                })
-//            }
-//
-//            val newPopularMovies = dao.getAllPopularMovies().map {
-//                it.toMovie()
-//            }
-//            emit(Resource.Success(newPopularMovies))
-//
-//        } catch (error: HttpException) {
-//            emit(Resource.Error(
-//                message = error.toString(),
-//                data = popularMovies
-//            ))
-//
-//        } catch (error: IOException) {
-//            emit(Resource.Error(
-//                message = error.toString(),
-//                data = popularMovies
-//            ))
-//        }
-//    }
-
-    override fun getAllPopularMovies(): Flow<PagingData<MovieEntity>>{
-
-        val pagingSourceFactory = { dao.pagingSource() }
-
-//        @OptIn(ExperimentalPagingApi::class)
-//        val pager =  Pager(
-//            config = PagingConfig(
-////                pageSize = NETWORK_PAGE_SIZE,
-//                pageSize = 20,
-//                enablePlaceholders = false
-//            ),
-//            remoteMediator = MovieRemoteMediator(api, db),
-//            pagingSourceFactory = pagingSourceFactory
-//        ).flow
-        @OptIn(ExperimentalPagingApi::class)
-        return Pager(
+        Pager(
             config = PagingConfig(
-                pageSize = 5,
-                enablePlaceholders = false,
+                pageSize = 20,
+                maxSize = 100,
+                enablePlaceholders = false
             ),
-            remoteMediator = MovieRemoteMediator(api, db),
-            pagingSourceFactory = pagingSourceFactory
+            pagingSourceFactory = { PagingSource(api) }
+
         ).flow
-    }
-
-//        Pager(
-//            config = PagingConfig(
-//                pageSize = 20,
-//                maxSize = 100,
-//                enablePlaceholders = false
-//            ),
-//            pagingSourceFactory = { PagingSource(api, db) }
-//
-//        ).flow
-//        emit(Resource.Loading())
-//
-//        val popularMovies = dao.getAllPopularMovies().map { it.toMovie() }
-//        emit(Resource.Loading(data = popularMovies))
-//
-//        try {
-//            val remotePopularMovies = api.getPopularMovies()
-//
-//            db.withTransaction {
-//                dao.deleteAllMovies()
-//                dao.insertMovies(remotePopularMovies.results.map {
-//                    it.toMovieEntity()
-//                })
-//            }
-//
-//            val newPopularMovies = dao.getAllPopularMovies().map {
-//                it.toMovie()
-//            }
-//            emit(Resource.Success(newPopularMovies))
-//
-//        } catch (error: HttpException) {
-//            emit(Resource.Error(
-//                message = error.toString(),
-//                data = popularMovies
-//            ))
-//
-//        } catch (error: IOException) {
-//            emit(Resource.Error(
-//                message = error.toString(),
-//                data = popularMovies
-//            ))
-//        }
-
 }
