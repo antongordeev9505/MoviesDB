@@ -1,12 +1,15 @@
 package com.example.moviesdb.data.repository
 
 import android.util.Log
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.room.withTransaction
+import com.example.moviesdb.data.local.MovieEntity
 import com.example.moviesdb.data.local.MoviesDbDatabase
+import com.example.moviesdb.data.remote.MovieRemoteMediator
 import com.example.moviesdb.data.remote.MoviesDbApi
-import com.example.moviesdb.data.remote.PagingSource
 import com.example.moviesdb.domain.repository.PopularMoviesRepository
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.util.Resource
@@ -57,17 +60,40 @@ class PopularMoviesRepositoryImpl(
 //        }
 //    }
 
-    override fun getAllPopularMovies() =
+    override fun getAllPopularMovies(): Flow<PagingData<MovieEntity>>{
 
-        Pager(
+        val pagingSourceFactory = { dao.pagingSource() }
+
+//        @OptIn(ExperimentalPagingApi::class)
+//        val pager =  Pager(
+//            config = PagingConfig(
+////                pageSize = NETWORK_PAGE_SIZE,
+//                pageSize = 20,
+//                enablePlaceholders = false
+//            ),
+//            remoteMediator = MovieRemoteMediator(api, db),
+//            pagingSourceFactory = pagingSourceFactory
+//        ).flow
+        @OptIn(ExperimentalPagingApi::class)
+        return Pager(
             config = PagingConfig(
-                pageSize = 20,
-                maxSize = 100,
-                enablePlaceholders = false
+                pageSize = 5,
+                enablePlaceholders = false,
             ),
-            pagingSourceFactory = { PagingSource(api, db) }
-
+            remoteMediator = MovieRemoteMediator(api, db),
+            pagingSourceFactory = pagingSourceFactory
         ).flow
+    }
+
+//        Pager(
+//            config = PagingConfig(
+//                pageSize = 20,
+//                maxSize = 100,
+//                enablePlaceholders = false
+//            ),
+//            pagingSourceFactory = { PagingSource(api, db) }
+//
+//        ).flow
 //        emit(Resource.Loading())
 //
 //        val popularMovies = dao.getAllPopularMovies().map { it.toMovie() }

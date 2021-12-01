@@ -1,6 +1,7 @@
 package com.example.moviesdb.domain.use_case
 
 import androidx.paging.PagingData
+import com.example.moviesdb.data.local.MovieEntity
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.repository.PopularMoviesRepository
 import com.example.moviesdb.util.Resource
@@ -11,6 +12,6 @@ class GetPopularMovies(private val repository: PopularMoviesRepository) {
 //    operator fun invoke(): Flow<Resource<List<Movie>>> =
 //        repository.getAllPopularMovies()
 
-    operator fun invoke(): Flow<PagingData<Movie>> =
+    operator fun invoke(): Flow<PagingData<MovieEntity>> =
         repository.getAllPopularMovies()
 }

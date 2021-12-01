@@ -19,6 +19,6 @@ interface MoviesDbDao {
     @Query("SELECT * FROM movie")
     suspend fun getAllPopularMovies(): List<MovieEntity>
 
-//    @Query("SELECT * FROM movie WHERE label LIKE :query")
-//    fun pagingSource(query: String): PagingSource<Int, MovieEntity>
+    @Query("SELECT * FROM movie")
+    fun pagingSource(): PagingSource<Int, MovieEntity>
 }

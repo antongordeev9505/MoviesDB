@@ -3,6 +3,7 @@ package com.example.moviesdb.presentation
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.moviesdb.data.local.MovieEntity
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.use_case.GetPopularMovies
 import com.example.moviesdb.util.Resource
@@ -21,7 +22,7 @@ class PopularMoviesViewModel @Inject constructor(
 //        )
 //    }
 
-    fun getPopularMovies(): LiveData<PagingData<Movie>> = liveData {
+    fun getPopularMovies(): LiveData<PagingData<MovieEntity>> = liveData {
         emitSource(
             getPopularMovies.invoke().cachedIn(viewModelScope).asLiveData()
         )
