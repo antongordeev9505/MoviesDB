@@ -5,8 +5,8 @@ import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.repository.PopularSearchMoviesRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetPopularMovies(private val repository: PopularSearchMoviesRepository) {
+class SearchMoviesByQuery(private val repositorySearch: PopularSearchMoviesRepository) {
 
-    operator fun invoke(): Flow<PagingData<Movie>> =
-        repository.getAllPopularMovies()
+    operator fun invoke(query: String): Flow<PagingData<Movie>> =
+        repositorySearch.searchMoviesByQuery(query)
 }

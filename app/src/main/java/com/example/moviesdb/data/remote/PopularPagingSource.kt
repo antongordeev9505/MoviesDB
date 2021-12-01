@@ -7,7 +7,8 @@ import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
 
-class PagingSource(private val api: MoviesDbApi): PagingSource<Int, Movie>() {
+class PopularPagingSource(private val api: MoviesDbApi) :
+    PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
 
