@@ -11,7 +11,6 @@ interface MoviesDbApi {
 
     @GET("search/movie")
     suspend fun searchMoviesByQuery(
-        @Query("page") page: Int,
-        @Query("query") query: String
+        @Query("page") page: Int, @Query("query") query: String
     ): ListMoviesDto
 }

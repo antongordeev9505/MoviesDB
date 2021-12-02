@@ -1,4 +1,4 @@
-package com.example.moviesdb.presentation
+package com.example.moviesdb.presentation.popular_searchmovies
 
 import android.util.Log
 import androidx.lifecycle.*

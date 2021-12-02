@@ -1,13 +1,14 @@
-package com.example.moviesdb.data.remote
+package com.example.moviesdb.data.remote.pagination
 
 import androidx.paging.PagingSource
+import com.example.moviesdb.data.remote.MoviesDbApi
 import com.example.moviesdb.domain.model.Movie
 import retrofit2.HttpException
 import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
 
-class SearchMovieByQueryPagingSource(private val query: String, private val api: MoviesDbApi) :
+class PopularPagingSource(private val api: MoviesDbApi) :
     PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
@@ -15,7 +16,7 @@ class SearchMovieByQueryPagingSource(private val query: String, private val api:
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = api.searchMoviesByQuery(position, query)
+            val response = api.getPopularMovies(position)
             val movies = response.results.map { it.toMovie() }
 
             LoadResult.Page(

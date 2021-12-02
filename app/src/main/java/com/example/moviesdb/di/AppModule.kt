@@ -3,10 +3,14 @@ package com.example.moviesdb.di
 import android.app.Application
 import androidx.room.Room
 import com.example.moviesdb.data.local.MoviesDbDatabase
+import com.example.moviesdb.data.remote.DetailMovieApi
 import com.example.moviesdb.data.remote.MoviesDbApi
+import com.example.moviesdb.data.repository.DetailMovieRepositoryImpl
 import com.example.moviesdb.data.repository.PopularSearchMoviesRepositoryImpl
+import com.example.moviesdb.domain.repository.DetailMovieRepository
 import com.example.moviesdb.domain.repository.PopularSearchMoviesRepository
 import com.example.moviesdb.domain.use_case.GetPopularMovies
+import com.example.moviesdb.domain.use_case.GetRecommendation
 import com.example.moviesdb.domain.use_case.SearchMoviesByQuery
 import dagger.Module
 import dagger.Provides
@@ -33,10 +37,26 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetRecommendationUseCase(
+        repository: DetailMovieRepository
+    ): GetRecommendation {
+        return GetRecommendation(repository)
+    }
+
+    @Provides
+    @Singleton
     fun providePopularSearchMoviesRepository(
         api: MoviesDbApi
     ): PopularSearchMoviesRepository {
         return PopularSearchMoviesRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailMovieRepository(
+        api: DetailMovieApi
+    ): DetailMovieRepository {
+        return DetailMovieRepositoryImpl(api)
     }
 
     @Provides

@@ -12,7 +12,7 @@ import com.example.moviesdb.R
 import com.example.moviesdb.databinding.MovieItemBinding
 import com.example.moviesdb.domain.model.Movie
 
-class PopularMoviesAdapter() :
+class PopularMoviesAdapter(private val listener: OnItemClickListener) :
     PagingDataAdapter<Movie, PopularMoviesAdapter.PopularMoviesViewHolder>(
         PopularMoviesComparator()
     ) {
@@ -37,8 +37,22 @@ class PopularMoviesAdapter() :
         }
     }
 
-    class PopularMoviesViewHolder(private val binding: MovieItemBinding) :
+    inner class PopularMoviesViewHolder(private val binding: MovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = getItem(position)
+
+                    if (item != null) {
+                        listener.onItemClick(item)
+                    }
+                }
+            }
+        }
 
         fun bind(movie: Movie) {
             binding.apply {
@@ -54,6 +68,10 @@ class PopularMoviesAdapter() :
                     .into(moviePosterImageView)
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(movie: Movie)
     }
 
     class PopularMoviesComparator : DiffUtil.ItemCallback<Movie>() {

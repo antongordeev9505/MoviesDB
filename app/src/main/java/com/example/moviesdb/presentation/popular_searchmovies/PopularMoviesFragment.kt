@@ -1,6 +1,7 @@
-package com.example.moviesdb.presentation
+package com.example.moviesdb.presentation.popular_searchmovies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -12,12 +13,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentPopularMoviesBinding
+import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.presentation.MovieLoadStateAdapter
+import com.example.moviesdb.presentation.PopularMoviesAdapter
+import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
+class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies), PopularMoviesAdapter.OnItemClickListener {
 
-    private val adapter = PopularMoviesAdapter()
+    private val adapter = PopularMoviesAdapter(this)
     lateinit var popularMoviesViewModel: PopularMoviesViewModel
     private var _binding: FragmentPopularMoviesBinding? = null
     private val binding get() = _binding!!
@@ -101,6 +106,13 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                 return true
             }
         })
+    }
+
+    override fun onItemClick(movie: Movie) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, DetailMovieFragment.newInstance(movie))
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onDestroyView() {

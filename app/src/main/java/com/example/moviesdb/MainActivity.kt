@@ -2,8 +2,6 @@ package com.example.moviesdb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.example.moviesdb.presentation.PopularMoviesFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
