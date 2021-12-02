@@ -97,6 +97,32 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
             }
 
         })
+
+        viewModel.getCastByMovie(movieId).observe(viewLifecycleOwner, Observer {
+
+            when(it) {
+                is Resource.Success -> {
+                    Log.d("proverkacast", "Success")
+                    it.data.cast.map { cast ->
+                        Log.d("proverkacast", cast.toString())
+                    }
+                    it.data.crew.map { crew ->
+                        Log.d("proverkacast", crew.toString())
+                    }
+                }
+
+                is Resource.Loading -> {
+                    Log.d("proverkacast", "Loading")
+                }
+
+                is Resource.Error -> {
+                    Log.d("proverkacast", "Error")
+                }
+
+                else -> Unit
+            }
+
+        })
     }
 
     private fun initUi(movie: Movie?) {

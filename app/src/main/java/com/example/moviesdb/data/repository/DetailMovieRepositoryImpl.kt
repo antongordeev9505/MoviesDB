@@ -1,6 +1,8 @@
 package com.example.moviesdb.data.repository
 
 import com.example.moviesdb.data.remote.DetailMovieApi
+import com.example.moviesdb.data.remote.dto.CastByMovieDto
+import com.example.moviesdb.domain.model.CastByMovie
 import com.example.moviesdb.domain.model.ImageByMovie
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.repository.DetailMovieRepository
@@ -46,6 +48,35 @@ class DetailMovieRepositoryImpl(
             }
 
             emit(Resource.Success(images))
+        } catch (error: HttpException) {
+            emit(Resource.Error(exception = error.toString()))
+
+        } catch (error: IOException) {
+            emit(Resource.Error(exception = error.toString()))
+        }
+    }
+
+    override fun getCastByMovie(
+        movieId: Int
+    ): Flow<Resource<CastByMovie>> = flow {
+        emit(Resource.Loading)
+
+        try {
+            val response = api.getCastByMovie(movieId)
+
+            val cast = response.copy().cast.filter {
+                it.order < 10
+            }
+
+            val crew = response.copy().crew.filter {
+                it.department == "Directing"
+            }.filter {
+                it.job == "Director"
+            }
+
+            val castCrew = CastByMovieDto(cast, crew, response.id).toCastByMovie()
+
+            emit(Resource.Success(castCrew))
         } catch (error: HttpException) {
             emit(Resource.Error(exception = error.toString()))
 

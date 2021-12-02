@@ -1,5 +1,6 @@
 package com.example.moviesdb.data.remote
 
+import com.example.moviesdb.data.remote.dto.CastByMovieDto
 import com.example.moviesdb.data.remote.dto.ImagesByMovieDto
 import com.example.moviesdb.data.remote.dto.ListMoviesDto
 import retrofit2.http.GET
@@ -18,4 +19,9 @@ interface DetailMovieApi {
         @Path("movie_id") movieId: Int,
         @Query("include_image_language") language: String
     ): ImagesByMovieDto
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getCastByMovie(
+        @Path("movie_id") movieId: Int
+    ): CastByMovieDto
 }
