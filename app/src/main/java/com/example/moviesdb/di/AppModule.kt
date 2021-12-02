@@ -9,6 +9,7 @@ import com.example.moviesdb.data.repository.DetailMovieRepositoryImpl
 import com.example.moviesdb.data.repository.PopularSearchMoviesRepositoryImpl
 import com.example.moviesdb.domain.repository.DetailMovieRepository
 import com.example.moviesdb.domain.repository.PopularSearchMoviesRepository
+import com.example.moviesdb.domain.use_case.GetImagesByMovie
 import com.example.moviesdb.domain.use_case.GetPopularMovies
 import com.example.moviesdb.domain.use_case.GetRecommendation
 import com.example.moviesdb.domain.use_case.SearchMoviesByQuery
@@ -41,6 +42,14 @@ object AppModule {
         repository: DetailMovieRepository
     ): GetRecommendation {
         return GetRecommendation(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetImagesByMovie(
+        repository: DetailMovieRepository
+    ): GetImagesByMovie {
+        return GetImagesByMovie(repository)
     }
 
     @Provides

@@ -74,6 +74,29 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                 else -> Unit
             }
         })
+
+        viewModel.getImagesByMovie(movieId).observe(viewLifecycleOwner, Observer {
+
+            when(it) {
+                is Resource.Success -> {
+                    Log.d("proverka", "Success")
+                    it.data.map { image ->
+                        Log.d("proverka", image.toString())
+                    }
+                }
+
+                is Resource.Loading -> {
+                    Log.d("proverka", "Loading")
+                }
+
+                is Resource.Error -> {
+                    Log.d("proverka", "Error")
+                }
+
+                else -> Unit
+            }
+
+        })
     }
 
     private fun initUi(movie: Movie?) {
