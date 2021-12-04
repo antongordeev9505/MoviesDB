@@ -5,6 +5,7 @@ import com.example.moviesdb.data.remote.dto.CastByMovieDto
 import com.example.moviesdb.domain.model.CastByMovie
 import com.example.moviesdb.domain.model.ImageByMovie
 import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.domain.model.MovieDetails
 import com.example.moviesdb.domain.repository.DetailMovieRepository
 import com.example.moviesdb.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -77,6 +78,21 @@ class DetailMovieRepositoryImpl(
             val castCrew = CastByMovieDto(cast, crew, response.id).toCastByMovie()
 
             emit(Resource.Success(castCrew))
+        } catch (error: HttpException) {
+            emit(Resource.Error(exception = error.toString()))
+
+        } catch (error: IOException) {
+            emit(Resource.Error(exception = error.toString()))
+        }
+    }
+
+    override fun getMovieDetails(movieId: Int): Flow<Resource<MovieDetails>> = flow {
+        emit(Resource.Loading)
+
+        try {
+            val movieDetails = api.getMovieDetails(movieId).toMovieDetails()
+
+            emit(Resource.Success(movieDetails))
         } catch (error: HttpException) {
             emit(Resource.Error(exception = error.toString()))
 

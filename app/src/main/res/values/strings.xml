@@ -5,4 +5,5 @@
     <string name="query_is_empty">No results were found for this query</string>
     <string name="search_icon">Search movie</string>
     <string name="movie_image">movieImage</string>
+    <string name="poster_image">poster image</string>
 </resources>

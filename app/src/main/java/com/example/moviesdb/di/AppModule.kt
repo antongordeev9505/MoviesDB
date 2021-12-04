@@ -59,6 +59,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetMovieDetails(
+        repository: DetailMovieRepository
+    ): GetMovieDetails {
+        return GetMovieDetails(repository)
+    }
+
+    @Provides
+    @Singleton
     fun providePopularSearchMoviesRepository(
         api: MoviesDbApi
     ): PopularSearchMoviesRepository {

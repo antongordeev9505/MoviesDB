@@ -3,6 +3,7 @@ package com.example.moviesdb.data.remote
 import com.example.moviesdb.data.remote.dto.CastByMovieDto
 import com.example.moviesdb.data.remote.dto.ImagesByMovieDto
 import com.example.moviesdb.data.remote.dto.ListMoviesDto
+import com.example.moviesdb.data.remote.dto.MovieDetailDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -24,4 +25,9 @@ interface DetailMovieApi {
     suspend fun getCastByMovie(
         @Path("movie_id") movieId: Int
     ): CastByMovieDto
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int
+    ): MovieDetailDto
 }

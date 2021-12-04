@@ -15,6 +15,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
 import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.presentation.GenreAdapter
+import com.example.moviesdb.presentation.PopularMoviesAdapter
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +27,8 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
     private var _binding: FragmentDetailMovieBinding? = null
     private val binding get() = _binding!!
+    private val adapter = GenreAdapter()
+
 
     companion object {
         const val EXTRA_MOVIE = "EXTRA MOVIE"
@@ -48,6 +52,9 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
         arguments.let {
             movie = arguments?.getParcelable<Movie>(EXTRA_MOVIE)
         }
+        binding.apply {
+            recyclerviewGenre.adapter = adapter
+        }
 
         initUi(movie)
         if (movie != null) {
@@ -56,6 +63,45 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     }
 
     private fun initObservers(movieId: Int) {
+        viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner, Observer {
+
+            when(it) {
+                is Resource.Success -> {
+                    val detailMovie = it.data
+                    view?.let { view ->
+                        Glide.with(view.context)
+                            .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}")
+                            .placeholder(R.drawable.ic_baseline_image_24)
+                            .error(R.drawable.ic_baseline_error_24)
+                            .into(binding.imageToolbar)
+                    }
+
+                    view?.let { view ->
+                        Glide.with(view.context)
+                            .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.poster_path}")
+                            .placeholder(R.drawable.ic_baseline_image_24)
+                            .error(R.drawable.ic_baseline_error_24)
+                            .into(binding.poster)
+                    }
+
+
+                    detailMovie.genres.let { genre->
+                        adapter.submitList(genre)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    Log.d("proverka", "Loading")
+                }
+
+                is Resource.Error -> {
+                    Log.d("proverka", "Error")
+                }
+
+                else -> Unit
+            }
+        })
+
         viewModel.getRecommendation(movieId).observe(viewLifecycleOwner, Observer {
 
             when(it) {
@@ -85,13 +131,13 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 //                    Log.d("proverkad", (it.data[0] == null).toString())
                     if (it.data.isNotEmpty()){
                         val image = it.data[0].file_path
-                        view?.let { view ->
-                            Glide.with(view.context)
-                                .load("${POSTER_IMAGE_PATH_PREFIX}${image}")
-                                .placeholder(R.drawable.ic_baseline_image_24)
-                                .error(R.drawable.ic_baseline_error_24)
-                                .into(binding.imageToolbar)
-                        }
+//                        view?.let { view ->
+//                            Glide.with(view.context)
+//                                .load("${POSTER_IMAGE_PATH_PREFIX}${image}")
+//                                .placeholder(R.drawable.ic_baseline_image_24)
+//                                .error(R.drawable.ic_baseline_error_24)
+//                                .into(binding.imageToolbar)
+//                        }
                     }
                 }
 
