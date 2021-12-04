@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +28,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
     companion object {
         const val EXTRA_MOVIE = "EXTRA MOVIE"
-        const val POSTER_IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w300"
+        const val POSTER_IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w500"
 
         fun newInstance(movie: Movie) =
             DetailMovieFragment().apply {
@@ -79,9 +82,16 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
             when(it) {
                 is Resource.Success -> {
-                    Log.d("proverka", "Success")
-                    it.data.map { image ->
-                        Log.d("proverka", image.toString())
+//                    Log.d("proverkad", (it.data[0] == null).toString())
+                    if (it.data.isNotEmpty()){
+                        val image = it.data[0].file_path
+                        view?.let { view ->
+                            Glide.with(view.context)
+                                .load("${POSTER_IMAGE_PATH_PREFIX}${image}")
+                                .placeholder(R.drawable.ic_baseline_image_24)
+                                .error(R.drawable.ic_baseline_error_24)
+                                .into(binding.imageToolbar)
+                        }
                     }
                 }
 
@@ -128,17 +138,15 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     private fun initUi(movie: Movie?) {
         movie?.let {
             binding.apply {
-                title.text = movie.original_title
+                collapsingToolbar.title = movie.original_title
 
-                view?.let {
-                    Glide.with(it.context)
-                        .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_baseline_image_24)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .error(R.drawable.ic_baseline_error_24)
-                        .into(poster)
-                }
+//                view?.let {
+//                    Glide.with(it.context)
+//                        .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
+//                        .placeholder(R.drawable.ic_baseline_image_24)
+//                        .error(R.drawable.ic_baseline_error_24)
+//                        .into(imageToolbar)
+//                }
             }
 
         }

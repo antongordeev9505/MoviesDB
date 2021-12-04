@@ -1,9 +1,6 @@
 package com.example.moviesdb.presentation.popular_searchmovies
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -35,7 +32,29 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies), Popula
         initObserver()
         initUi()
         initLoadState()
-        setHasOptionsMenu(true)
+        initSearchView()
+    }
+
+    private fun initSearchView() {
+        val search = binding.searchView
+
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null)  {
+                    popularMoviesViewModel.onSearchQuery(query)
+                    search.clearFocus()
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null)  {
+                    popularMoviesViewModel.onSearchQuery(newText)
+                }
+                return true
+            }
+        })
+
     }
 
     private fun initUi() {
@@ -80,31 +99,6 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies), Popula
     private fun initObserver() {
         popularMoviesViewModel.moviesMediatorData.observe(viewLifecycleOwner, Observer {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
-        })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_search, menu)
-
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null)  {
-                    popularMoviesViewModel.onSearchQuery(query)
-                    searchView.clearFocus()
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null)  {
-                    popularMoviesViewModel.onSearchQuery(newText)
-                }
-                return true
-            }
         })
     }
 
