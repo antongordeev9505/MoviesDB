@@ -48,7 +48,7 @@ class PopularMoviesAdapter(private val listener: OnItemClickListener) :
                     val item = getItem(position)
 
                     if (item != null) {
-                        listener.onItemClick(item)
+                        listener.onItemClick(item.id)
                     }
                 }
             }
@@ -71,7 +71,7 @@ class PopularMoviesAdapter(private val listener: OnItemClickListener) :
     }
 
     interface OnItemClickListener {
-        fun onItemClick(movie: Movie)
+        fun onItemClick(id: Int)
     }
 
     class PopularMoviesComparator : DiffUtil.ItemCallback<Movie>() {

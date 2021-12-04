@@ -102,9 +102,9 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies), Popula
         })
     }
 
-    override fun onItemClick(movie: Movie) {
+    override fun onItemClick(id: Int) {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, DetailMovieFragment.newInstance(movie))
+            .replace(R.id.fragment_container, DetailMovieFragment.newInstance(id))
             .addToBackStack(null)
             .commit()
     }

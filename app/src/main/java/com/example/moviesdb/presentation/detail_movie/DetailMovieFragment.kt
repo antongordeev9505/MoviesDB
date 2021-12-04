@@ -31,13 +31,13 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
 
     companion object {
-        const val EXTRA_MOVIE = "EXTRA MOVIE"
+        const val EXTRA_MOVIE_ID = "EXTRA MOVIE ID"
         const val POSTER_IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w500"
 
-        fun newInstance(movie: Movie) =
+        fun newInstance(id: Int) =
             DetailMovieFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(EXTRA_MOVIE, movie)
+                    putInt(EXTRA_MOVIE_ID, id)
                 }
             }
     }
@@ -48,17 +48,17 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
         _binding = FragmentDetailMovieBinding.bind(view)
 
-        val movie: Movie?
+        val movieId: Int?
         arguments.let {
-            movie = arguments?.getParcelable<Movie>(EXTRA_MOVIE)
+            movieId = arguments?.getInt(EXTRA_MOVIE_ID)
         }
         binding.apply {
             recyclerviewGenre.adapter = adapter
         }
 
-        initUi(movie)
-        if (movie != null) {
-            initObservers(movie.id)
+        initUi(movieId)
+        if (movieId != null) {
+            initObservers(movieId)
         }
     }
 
@@ -69,11 +69,16 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                 is Resource.Success -> {
                     val detailMovie = it.data
                     view?.let { view ->
-                        Glide.with(view.context)
-                            .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}")
-                            .placeholder(R.drawable.ic_baseline_image_24)
-                            .error(R.drawable.ic_baseline_error_24)
-                            .into(binding.imageToolbar)
+                        binding.apply {
+                            collapsingToolbar.title = detailMovie.original_title
+
+                            Glide.with(view.context)
+                                .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}")
+                                .placeholder(R.drawable.poster_image)
+                                .error(R.drawable.ic_baseline_error_24)
+                                .into(imageToolbar)
+                        }
+
                     }
 
                     view?.let { view ->
@@ -181,21 +186,21 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
         })
     }
 
-    private fun initUi(movie: Movie?) {
-        movie?.let {
-            binding.apply {
-                collapsingToolbar.title = movie.original_title
-
-//                view?.let {
-//                    Glide.with(it.context)
-//                        .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
-//                        .placeholder(R.drawable.ic_baseline_image_24)
-//                        .error(R.drawable.ic_baseline_error_24)
-//                        .into(imageToolbar)
-//                }
-            }
-
-        }
+    private fun initUi(movieId: Int?) {
+//        movie?.let {
+//            binding.apply {
+//                collapsingToolbar.title = movie.original_title
+//
+////                view?.let {
+////                    Glide.with(it.context)
+////                        .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
+////                        .placeholder(R.drawable.ic_baseline_image_24)
+////                        .error(R.drawable.ic_baseline_error_24)
+////                        .into(imageToolbar)
+////                }
+//            }
+//
+//        }
 
     }
 
