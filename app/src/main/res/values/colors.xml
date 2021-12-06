@@ -10,4 +10,10 @@
     <color name="titleColor">#000000</color>
     <color name="subTitleColor">#090909</color>
     <color name="noInternetButtonTextColor">#000000</color>
+    <color name="green">#0B9C12</color>
+    <color name="red">#C62828</color>
+    <color name="gray">#A9A9A9</color>
+    <color name="light_gray">#DCDCDC</color>
+    <color name="azure">#F0FFFF</color>
+
 </resources>

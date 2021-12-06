@@ -6,4 +6,12 @@
     <string name="search_icon">Search movie</string>
     <string name="movie_image">movieImage</string>
     <string name="poster_image">poster image</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="release_date">Release date</string>
+    <string name="add_to_watch_list">Add to Watch list</string>
+    <string name="add_to_my_list">Add to my list</string>
+    <string name="cast">Cast</string>
+    <string name="actor_image">actor image</string>
+    <string name="director">Director</string>
 </resources>

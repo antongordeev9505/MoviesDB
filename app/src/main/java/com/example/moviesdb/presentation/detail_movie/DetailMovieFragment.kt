@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.green
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,10 +16,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
 import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.presentation.CastAdapter
 import com.example.moviesdb.presentation.GenreAdapter
 import com.example.moviesdb.presentation.PopularMoviesAdapter
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
@@ -28,6 +31,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     private var _binding: FragmentDetailMovieBinding? = null
     private val binding get() = _binding!!
     private val adapter = GenreAdapter()
+    private val castAdapter = CastAdapter()
 
 
     companion object {
@@ -54,6 +58,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
         }
         binding.apply {
             recyclerviewGenre.adapter = adapter
+            recyclerviewCast.adapter = castAdapter
         }
 
         initUi(movieId)
@@ -71,6 +76,67 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                     view?.let { view ->
                         binding.apply {
                             collapsingToolbar.title = detailMovie.original_title
+                            if (detailMovie.tagline.isNullOrEmpty()) {
+                                tagline.isVisible = false
+                            }
+                            tagline.text = detailMovie.tagline
+                            overview.text = detailMovie.overview
+
+
+                            val voteAverage = detailMovie.vote_average
+                            if (voteAverage == 0.0 || voteAverage == null) {
+                                cardViewVote.isVisible = false
+                            } else {
+                                when {
+                                    voteAverage < 5.0 -> cardViewVote.strokeColor = resources.getColor(R.color.red)
+                                    voteAverage > 7.0 -> cardViewVote.strokeColor = resources.getColor(R.color.green)
+                                    else -> cardViewVote.strokeColor = resources.getColor(R.color.gray)
+                                }
+                                val voteText = "${detailMovie.vote_average}/10"
+                                vote.text = voteText
+                                voteCount.text = detailMovie.vote_count.toString()
+                            }
+
+
+
+
+                            if (detailMovie.budget == 0 || detailMovie.budget == null) {
+                                cardViewBudget.isVisible = false
+                            } else {
+                                val number = detailMovie.budget/1000000
+                                if (number < 1) {
+                                    val budgetText = "<1kk$"
+                                    budget.text = budgetText
+                                } else {
+                                    val budgetText = "${number}kk$"
+                                    budget.text = budgetText
+                                }
+                            }
+
+
+                            if (detailMovie.revenue == 0 || detailMovie.revenue == null) {
+                                cardViewRevenue.isVisible = false
+                            } else {
+                                val number = detailMovie.revenue/1000000
+                                if (number < 1) {
+                                    val revenueText = "<1kk$"
+                                    revenue.text = revenueText
+                                } else {
+                                    val revenueText = "${number}kk$"
+                                    revenue.text = revenueText
+                                }
+                            }
+
+                            if (detailMovie.release_date == null) {
+                                cardViewRevenue.isVisible = false
+                            } else {
+                                val date = detailMovie.release_date
+                                releaseDate.text = date
+                            }
+
+
+
+
 
                             Glide.with(view.context)
                                 .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}")
@@ -84,8 +150,8 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                     view?.let { view ->
                         Glide.with(view.context)
                             .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.poster_path}")
-                            .placeholder(R.drawable.ic_baseline_image_24)
-                            .error(R.drawable.ic_baseline_error_24)
+                            .placeholder(R.drawable.poster_image)
+                            .error(R.drawable.poster_image)
                             .into(binding.poster)
                     }
 
@@ -161,28 +227,30 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
         viewModel.getCastByMovie(movieId).observe(viewLifecycleOwner, Observer {
 
-            when(it) {
-                is Resource.Success -> {
-                    Log.d("proverkacast", "Success")
-                    it.data.cast.map { cast ->
-                        Log.d("proverkacast", cast.toString())
+            binding.apply {
+                when (it) {
+                    is Resource.Success -> {
+                        val cast = it.data.cast
+                        val crew = it.data.crew
+                        if (cast.isNullOrEmpty()) {
+                            castGroup.isVisible = false
+                        } else {
+                            castAdapter.submitList(cast)
+
+                            crew.map { crewDirector->
+                                val text = "Director: ${crewDirector.name}"
+                                director.text = text
+                            }
+                        }
                     }
-                    it.data.crew.map { crew ->
-                        Log.d("proverkacast", crew.toString())
+                    is Resource.Loading -> {
                     }
-                }
 
-                is Resource.Loading -> {
-                    Log.d("proverkacast", "Loading")
+                    is Resource.Error -> {
+                    }
+                    else -> Unit
                 }
-
-                is Resource.Error -> {
-                    Log.d("proverkacast", "Error")
-                }
-
-                else -> Unit
             }
-
         })
     }
 
