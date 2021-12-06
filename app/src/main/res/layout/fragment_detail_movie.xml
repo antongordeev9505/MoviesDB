@@ -413,6 +413,103 @@
                 app:layout_constraintStart_toStartOf="@id/content_start"
                 app:layout_constraintTop_toBottomOf="@id/cast_section_bottom_barrier" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/recommendations_group"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="@dimen/dimen_0dp"
+                app:constraint_referenced_ids="recommendations_text, recyclerview_recommendations, selector_line_recommendations"/>
+
+            <TextView
+                android:id="@+id/recommendations_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cast_section_bottom_barrier"
+                app:layout_constraintStart_toStartOf="@id/content_start"
+                app:layout_constraintEnd_toEndOf="@id/content_end"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                style="@style/TitleCategoryText"
+                android:text="@string/recommendations"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_recommendations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                app:layout_constraintTop_toBottomOf="@id/recommendations_text"
+                tools:listitem="@layout/recommendation_item" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/recommendations_section_bottom_barrier"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="recommendations_text, recyclerview_recommendations" />
+
+            <View
+                android:id="@+id/selector_line_recommendations"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@drawable/selector_detail_screen"
+                app:layout_constraintEnd_toEndOf="@id/content_end"
+                app:layout_constraintStart_toStartOf="@id/content_start"
+                app:layout_constraintTop_toBottomOf="@id/recommendations_section_bottom_barrier" />
+
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/images_group"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="@dimen/dimen_0dp"
+                app:constraint_referenced_ids="images_text, recyclerview_images, selector_line_images"/>
+
+            <TextView
+                android:id="@+id/images_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/recommendations_section_bottom_barrier"
+                app:layout_constraintStart_toStartOf="@id/content_start"
+                app:layout_constraintEnd_toEndOf="@id/content_end"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                style="@style/TitleCategoryText"
+                android:text="@string/images"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_images"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                app:layout_constraintTop_toBottomOf="@id/images_text"
+                tools:listitem="@layout/image_item" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/images_section_bottom_barrier"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="images_text, recyclerview_images" />
+
+            <View
+                android:id="@+id/selector_line_images"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginBottom="@dimen/dimen_8dp"
+                android:background="@drawable/selector_detail_screen"
+                app:layout_constraintEnd_toEndOf="@id/content_end"
+                app:layout_constraintStart_toStartOf="@id/content_start"
+                app:layout_constraintTop_toBottomOf="@id/images_section_bottom_barrier"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

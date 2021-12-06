@@ -1,7 +1,7 @@
 package com.example.moviesdb.domain.repository
 
 import com.example.moviesdb.domain.model.CastByMovie
-import com.example.moviesdb.domain.model.ImageByMovie
+import com.example.moviesdb.domain.model.ImagesByMovie
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.model.MovieDetails
 import com.example.moviesdb.util.Resource
@@ -11,7 +11,7 @@ interface DetailMovieRepository {
 
     fun getRecommendations(movieId: Int): Flow<Resource<List<Movie>>>
 
-    fun getImagesByMovie(movieId: Int): Flow<Resource<List<ImageByMovie>>>
+    fun getImagesByMovie(movieId: Int): Flow<Resource<ImagesByMovie>>
 
     fun getCastByMovie(movieId: Int): Flow<Resource<CastByMovie>>
 

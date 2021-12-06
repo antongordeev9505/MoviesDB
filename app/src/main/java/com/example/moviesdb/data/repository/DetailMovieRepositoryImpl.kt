@@ -3,7 +3,7 @@ package com.example.moviesdb.data.repository
 import com.example.moviesdb.data.remote.DetailMovieApi
 import com.example.moviesdb.data.remote.dto.CastByMovieDto
 import com.example.moviesdb.domain.model.CastByMovie
-import com.example.moviesdb.domain.model.ImageByMovie
+import com.example.moviesdb.domain.model.ImagesByMovie
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.model.MovieDetails
 import com.example.moviesdb.domain.repository.DetailMovieRepository
@@ -40,13 +40,11 @@ class DetailMovieRepositoryImpl(
 
     override fun getImagesByMovie(
         movieId: Int
-    ): Flow<Resource<List<ImageByMovie>>> = flow {
+    ): Flow<Resource<ImagesByMovie>> = flow {
         emit(Resource.Loading)
 
         try {
-            val images = api.getImagesByMovie(movieId, LANGUAGE).backdrops.map {
-                it.toImageByMovie()
-            }
+            val images = api.getImagesByMovie(movieId, LANGUAGE).toImagesByMovie()
 
             emit(Resource.Success(images))
         } catch (error: HttpException) {

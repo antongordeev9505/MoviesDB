@@ -21,28 +21,21 @@
             android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/actor_image"
-            android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:src="@drawable/poster_image" />
+            android:contentDescription="@string/poster_image"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/poster_image" />
 
         <TextView
-            android:id="@+id/actor"
+            android:id="@+id/title"
             style="@style/TitleTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/dimen_4dp"
-            tools:text="Actor" />
-
-        <TextView
-            android:id="@+id/character"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/dimen_8dp"
             android:paddingStart="@dimen/dimen_4dp"
+            android:paddingTop="@dimen/dimen_4dp"
             android:paddingEnd="@dimen/dimen_4dp"
-            android:textStyle="italic"
-            tools:text="Character" />
+            android:paddingBottom="@dimen/dimen_8dp"
+            tools:text="Title" />
 
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.example.moviesdb.presentation
+package com.example.moviesdb.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,27 +9,27 @@ import com.example.moviesdb.databinding.GenreItemBinding
 import com.example.moviesdb.domain.model.MovieDetails
 
 class GenreAdapter() :
-    ListAdapter<MovieDetails.Genre, GenreAdapter.GenreViewHolder>(
+    ListAdapter<MovieDetails.Genre, GenreAdapter.ViewHolder>(
         Comparator()
     ) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
-    ): GenreAdapter.GenreViewHolder {
+    ): ViewHolder {
         val binding =
             GenreItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return GenreViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = getItem(position)
         if (currentItem != null) {
             holder.bind(currentItem)
         }
     }
 
-    class GenreViewHolder(private val binding: GenreItemBinding) :
+    class ViewHolder(private val binding: GenreItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(genre: MovieDetails.Genre) {
             binding.apply {

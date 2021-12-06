@@ -1,4 +1,4 @@
-package com.example.moviesdb.presentation
+package com.example.moviesdb.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.CastItemBinding
-import com.example.moviesdb.databinding.GenreItemBinding
 import com.example.moviesdb.domain.model.CastByMovie
-import com.example.moviesdb.domain.model.MovieDetails
-import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
+
 
 class CastAdapter() :
-    ListAdapter<CastByMovie.Cast, CastAdapter.CastViewHolder>(
+    ListAdapter<CastByMovie.Cast, CastAdapter.ViewHolder>(
         Comparator()
     ) {
 
@@ -24,21 +22,21 @@ class CastAdapter() :
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
-    ): CastAdapter.CastViewHolder {
+    ): ViewHolder {
         val binding =
             CastItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return CastViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CastViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = getItem(position)
         if (currentItem != null) {
             holder.bind(currentItem)
         }
     }
 
-    class CastViewHolder(private val binding: CastItemBinding) :
+    class ViewHolder(private val binding: CastItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(cast: CastByMovie.Cast) {
             binding.apply {
@@ -47,7 +45,7 @@ class CastAdapter() :
 
 
                     Glide.with(itemView.context)
-                        .load("${IMAGE_PATH_PREFIX}${cast.profile_path}")
+                        .load("$IMAGE_PATH_PREFIX${cast.profile_path}")
                         .placeholder(R.drawable.poster_image)
                         .error(R.drawable.poster_image)
                         .into(image)

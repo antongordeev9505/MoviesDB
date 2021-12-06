@@ -1,6 +1,5 @@
-package com.example.moviesdb.presentation
+package com.example.moviesdb.presentation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -60,7 +59,7 @@ class PopularMoviesAdapter(private val listener: OnItemClickListener) :
                 overview.text = movie.overview
 
                 Glide.with(itemView.context)
-                    .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
+                    .load("$POSTER_IMAGE_PATH_PREFIX${movie.poster_path}")
                     .centerCrop()
                     .placeholder(R.drawable.ic_baseline_image_24)
                     .transition(DrawableTransitionOptions.withCrossFade())

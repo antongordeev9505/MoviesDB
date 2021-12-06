@@ -10,9 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentPopularMoviesBinding
-import com.example.moviesdb.domain.model.Movie
-import com.example.moviesdb.presentation.MovieLoadStateAdapter
-import com.example.moviesdb.presentation.PopularMoviesAdapter
+import com.example.moviesdb.presentation.adapters.MovieLoadStateAdapter
+import com.example.moviesdb.presentation.adapters.PopularMoviesAdapter
 import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
 import dagger.hilt.android.AndroidEntryPoint
 

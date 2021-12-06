@@ -3,25 +3,19 @@ package com.example.moviesdb.presentation.detail_movie
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.graphics.green
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
-import com.example.moviesdb.domain.model.Movie
-import com.example.moviesdb.presentation.CastAdapter
-import com.example.moviesdb.presentation.GenreAdapter
-import com.example.moviesdb.presentation.PopularMoviesAdapter
+import com.example.moviesdb.presentation.adapters.CastAdapter
+import com.example.moviesdb.presentation.adapters.GenreAdapter
+import com.example.moviesdb.presentation.adapters.ImagesAdapter
+import com.example.moviesdb.presentation.adapters.RecommendationsAdapter
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
@@ -32,7 +26,8 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     private val binding get() = _binding!!
     private val adapter = GenreAdapter()
     private val castAdapter = CastAdapter()
-
+    private val recommendationsAdapter = RecommendationsAdapter()
+    private val imagesAdapter = ImagesAdapter()
 
     companion object {
         const val EXTRA_MOVIE_ID = "EXTRA MOVIE ID"
@@ -59,6 +54,8 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
         binding.apply {
             recyclerviewGenre.adapter = adapter
             recyclerviewCast.adapter = castAdapter
+            recyclerviewRecommendations.adapter = recommendationsAdapter
+            recyclerviewImages.adapter = imagesAdapter
         }
 
         initUi(movieId)
@@ -174,55 +171,45 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
         })
 
         viewModel.getRecommendation(movieId).observe(viewLifecycleOwner, Observer {
-
-            when(it) {
-                is Resource.Success -> {
-                    Log.d("proverka", "Success")
-                    it.data.map { movie ->
-                        Log.d("proverka", movie.toString())
+            binding.apply {
+                when (it) {
+                    is Resource.Success -> {
+                        val list = it.data
+                        if (list.isNullOrEmpty()) {
+                            recommendationsGroup.isVisible = false
+                        } else {
+                            recommendationsAdapter.submitList(list)
+                        }
                     }
-                }
+                    is Resource.Loading -> {
+                    }
 
-                is Resource.Loading -> {
-                    Log.d("proverka", "Loading")
+                    is Resource.Error -> {
+                    }
+                    else -> Unit
                 }
-
-                is Resource.Error -> {
-                    Log.d("proverka", "Error")
-                }
-
-                else -> Unit
             }
         })
 
         viewModel.getImagesByMovie(movieId).observe(viewLifecycleOwner, Observer {
-
-            when(it) {
-                is Resource.Success -> {
-//                    Log.d("proverkad", (it.data[0] == null).toString())
-                    if (it.data.isNotEmpty()){
-                        val image = it.data[0].file_path
-//                        view?.let { view ->
-//                            Glide.with(view.context)
-//                                .load("${POSTER_IMAGE_PATH_PREFIX}${image}")
-//                                .placeholder(R.drawable.ic_baseline_image_24)
-//                                .error(R.drawable.ic_baseline_error_24)
-//                                .into(binding.imageToolbar)
-//                        }
+            binding.apply {
+                when (it) {
+                    is Resource.Success -> {
+                        val list = it.data.backdrops
+                        if (list.isNullOrEmpty()) {
+                            imagesGroup.isVisible = false
+                        } else {
+                            imagesAdapter.submitList(list)
+                        }
                     }
-                }
+                    is Resource.Loading -> {
+                    }
 
-                is Resource.Loading -> {
-                    Log.d("proverka", "Loading")
+                    is Resource.Error -> {
+                    }
+                    else -> Unit
                 }
-
-                is Resource.Error -> {
-                    Log.d("proverka", "Error")
-                }
-
-                else -> Unit
             }
-
         })
 
         viewModel.getCastByMovie(movieId).observe(viewLifecycleOwner, Observer {

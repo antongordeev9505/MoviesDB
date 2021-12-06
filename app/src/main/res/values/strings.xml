@@ -14,4 +14,7 @@
     <string name="cast">Cast</string>
     <string name="actor_image">actor image</string>
     <string name="director">Director</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="images">Images</string>
+    <string name="image">image</string>
 </resources>

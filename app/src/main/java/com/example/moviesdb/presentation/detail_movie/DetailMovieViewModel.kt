@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.moviesdb.domain.model.CastByMovie
-import com.example.moviesdb.domain.model.ImageByMovie
+import com.example.moviesdb.domain.model.ImagesByMovie
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.model.MovieDetails
 import com.example.moviesdb.domain.use_case.GetCastByMovie
@@ -34,7 +34,7 @@ class DetailMovieViewModel @Inject constructor(
 
     fun getImagesByMovie(
         movieId: Int
-    ): LiveData<Resource<List<ImageByMovie>>> = liveData {
+    ): LiveData<Resource<ImagesByMovie>> = liveData {
         emitSource(
             getImagesByMovieUseCase.invoke(movieId).asLiveData()
         )
