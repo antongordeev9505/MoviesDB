@@ -12,6 +12,7 @@ import com.example.moviesdb.databinding.FragmentDiscoverBinding
 import com.example.moviesdb.presentation.adapters.MovieLoadStateAdapter
 import com.example.moviesdb.presentation.adapters.PopularMoviesAdapter
 import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
+import com.example.moviesdb.presentation.discover.dialog.DiscoverMoviesDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +43,19 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
             retryButton.setOnClickListener {
                 adapter.retry()
             }
+
+            fab.setOnClickListener {
+                showDialog()
+            }
         }
+    }
+
+    private fun showDialog() {
+        val fragmentManager = parentFragmentManager ?: return
+
+        val dialog = DiscoverMoviesDialogFragment()
+
+        dialog.show(fragmentManager, null)
     }
 
     private fun initLoadState() {

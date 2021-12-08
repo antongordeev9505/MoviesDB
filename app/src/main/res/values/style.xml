@@ -39,6 +39,15 @@
         <item name="android:textColor">@color/titleColor</item>
     </style>
 
+    <style name="FragmentDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="Fab" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:background">@color/black</item>
+    </style>
+
 
 
 </resources>
