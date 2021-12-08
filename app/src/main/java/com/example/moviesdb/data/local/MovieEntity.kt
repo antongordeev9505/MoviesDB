@@ -11,12 +11,12 @@ data class MovieEntity(
     val poster_path: String,
     val overview: String
 ) {
-    fun toMovie(): Movie {
-        return Movie(
-            id = id,
-            original_title = original_title,
-            poster_path = poster_path,
-            overview = overview
-        )
-    }
+//    fun toMovie(): Movie {
+//        return Movie(
+//            id = id,
+//            original_title = original_title,
+//            poster_path = poster_path,
+//            overview = overview
+//        )
+//    }
 }

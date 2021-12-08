@@ -2,6 +2,7 @@ package com.example.moviesdb.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +58,12 @@ class PopularMoviesAdapter(private val listener: OnItemClickListener) :
             binding.apply {
                 title.text = movie.original_title
                 overview.text = movie.overview
+
+                if (movie.vote_average == 0.0) {
+                    voteAverage.isVisible = false
+                } else {
+                    voteAverage.text = movie.vote_average.toString()
+                }
 
                 Glide.with(itemView.context)
                     .load("$POSTER_IMAGE_PATH_PREFIX${movie.poster_path}")

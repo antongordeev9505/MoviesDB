@@ -1,6 +1,7 @@
 package com.example.moviesdb.di
 
 import com.example.moviesdb.data.remote.DetailMovieApi
+import com.example.moviesdb.data.remote.DiscoverMoviesApi
 import com.example.moviesdb.data.remote.MoviesDbApi
 import dagger.Module
 import dagger.Provides
@@ -67,4 +68,9 @@ object RemoteModule {
     @Singleton
     fun provideRecommendationsApi(retrofit: Retrofit) : DetailMovieApi =
         retrofit.create(DetailMovieApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDiscoverMoviesApi(retrofit: Retrofit) : DiscoverMoviesApi =
+        retrofit.create(DiscoverMoviesApi::class.java)
 }

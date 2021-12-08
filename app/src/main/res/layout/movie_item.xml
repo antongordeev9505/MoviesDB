@@ -11,12 +11,23 @@
         style="@style/TitleTextStyle"
         android:layout_width="@dimen/dimen_0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/vote_average"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cardView"
         app:layout_constraintTop_toTopOf="@id/cardView"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread"
         tools:text="Title" />
+
+    <TextView
+        android:id="@+id/vote_average"
+        style="@style/ExtraInfoText"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/overview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/title"
+        tools:text="Vote average" />
 
     <TextView
         android:id="@+id/overview"
@@ -27,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/vote_average"
         tools:text="Overview" />
 
     <androidx.cardview.widget.CardView

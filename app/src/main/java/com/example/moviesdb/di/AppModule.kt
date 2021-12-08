@@ -4,10 +4,13 @@ import android.app.Application
 import androidx.room.Room
 import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.data.remote.DetailMovieApi
+import com.example.moviesdb.data.remote.DiscoverMoviesApi
 import com.example.moviesdb.data.remote.MoviesDbApi
 import com.example.moviesdb.data.repository.DetailMovieRepositoryImpl
+import com.example.moviesdb.data.repository.DiscoverMoviesRepositoryImpl
 import com.example.moviesdb.data.repository.PopularSearchMoviesRepositoryImpl
 import com.example.moviesdb.domain.repository.DetailMovieRepository
+import com.example.moviesdb.domain.repository.DiscoverMoviesRepository
 import com.example.moviesdb.domain.repository.PopularSearchMoviesRepository
 import com.example.moviesdb.domain.use_case.*
 import dagger.Module
@@ -20,6 +23,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideDiscoverMoviesUseCase(repository: DiscoverMoviesRepository): DiscoverMovies {
+        return DiscoverMovies(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiscoverMoviesRepository(
+        api: DiscoverMoviesApi
+    ): DiscoverMoviesRepository {
+        return DiscoverMoviesRepositoryImpl(api)
+    }
 
     @Provides
     @Singleton

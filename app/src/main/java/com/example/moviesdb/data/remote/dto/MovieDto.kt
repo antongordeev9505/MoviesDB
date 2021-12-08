@@ -30,10 +30,15 @@ data class MovieDto(
 
     fun toMovie(): Movie {
         return Movie(
+            genre_ids = genre_ids,
             id = id,
             original_title = original_title,
+            overview = overview,
+            popularity = popularity,
             poster_path = poster_path,
-            overview = overview
+            release_date = release_date,
+            vote_average = vote_average,
+            vote_count = vote_count
         )
     }
 }
