@@ -242,20 +242,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     }
 
     private fun initUi(movieId: Int?) {
-//        movie?.let {
-//            binding.apply {
-//                collapsingToolbar.title = movie.original_title
-//
-////                view?.let {
-////                    Glide.with(it.context)
-////                        .load("${POSTER_IMAGE_PATH_PREFIX}${movie.poster_path}")
-////                        .placeholder(R.drawable.ic_baseline_image_24)
-////                        .error(R.drawable.ic_baseline_error_24)
-////                        .into(imageToolbar)
-////                }
-//            }
-//
-//        }
+
 
     }
 
