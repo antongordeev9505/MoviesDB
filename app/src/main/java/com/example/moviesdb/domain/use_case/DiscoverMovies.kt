@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 class DiscoverMovies(private val repository: DiscoverMoviesRepository) {
 
-    operator fun invoke(withCast: String): Flow<PagingData<Movie>> =
-        repository.discoverMovies(withCast)
+    operator fun invoke(withCast: String, sortBy: String = "popularity.desc"): Flow<PagingData<Movie>> =
+        repository.discoverMovies(withCast, sortBy)
 }

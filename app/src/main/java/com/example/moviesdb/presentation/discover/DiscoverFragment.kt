@@ -85,7 +85,11 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
     }
 
     private fun initObserver() {
-        discoverViewModel.discoverMovies("500").observe(viewLifecycleOwner, Observer {
+//        discoverViewModel.discoverMovies().observe(viewLifecycleOwner, Observer {
+//            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+//        })
+
+        discoverViewModel.movies.observe(viewLifecycleOwner, Observer {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         })
     }

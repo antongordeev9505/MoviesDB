@@ -9,6 +9,7 @@ interface DiscoverMoviesApi {
     @GET("discover/movie")
     suspend fun discoverMovies(
         @Query("page") page: Int,
-        @Query("with_cast") withCast: String
+        @Query("with_cast") withCast: String,
+        @Query("sort_by") sortBy: String
     ): ListMoviesDto
 }

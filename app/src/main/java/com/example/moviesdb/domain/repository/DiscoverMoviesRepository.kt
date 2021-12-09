@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DiscoverMoviesRepository {
 
-    fun discoverMovies(withCast: String): Flow<PagingData<Movie>>
+    fun discoverMovies(withCast: String, sortBy: String): Flow<PagingData<Movie>>
 }
