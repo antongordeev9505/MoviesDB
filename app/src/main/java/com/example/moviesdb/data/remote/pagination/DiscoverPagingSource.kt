@@ -10,9 +10,11 @@ private const val STARTING_PAGE_INDEX = 1
 
 class DiscoverPagingSource(
     private val api: DiscoverMoviesApi,
-    private val withCast: String,
+    private val releaseYear: Int?,
     private val sortBy: String,
-    private val minVoteCount: Int
+    private val minVoteCount: Int,
+    private val withGenre: String,
+    private val voteAverage: Int
 ) :
     PagingSource<Int, Movie>() {
 
@@ -21,7 +23,7 @@ class DiscoverPagingSource(
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = api.discoverMovies(position, withCast, sortBy, minVoteCount)
+            val response = api.discoverMovies(position, releaseYear, sortBy, minVoteCount, withGenre, voteAverage)
             val movies = response.results.map { it.toMovie() }
 
             LoadResult.Page(

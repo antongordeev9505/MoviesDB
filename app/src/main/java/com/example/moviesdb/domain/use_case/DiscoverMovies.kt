@@ -7,6 +7,12 @@ import kotlinx.coroutines.flow.Flow
 
 class DiscoverMovies(private val repository: DiscoverMoviesRepository) {
 
-    operator fun invoke(withCast: String, sortBy: String = "popularity.desc", minVoteCount: Int = 100): Flow<PagingData<Movie>> =
-        repository.discoverMovies(withCast, sortBy, minVoteCount)
+    operator fun invoke(
+        releaseYear: Int?,
+        sortBy: String = "popularity.desc",
+        minVoteCount: Int = 0,
+        withGenre: String = "",
+        voteAverage: Int = 0
+    ): Flow<PagingData<Movie>> =
+        repository.discoverMovies(releaseYear, sortBy, minVoteCount, withGenre, voteAverage)
 }

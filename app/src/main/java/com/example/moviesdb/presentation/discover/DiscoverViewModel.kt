@@ -20,35 +20,27 @@ class DiscoverViewModel @Inject constructor(
     private val getGenresUseCase: GetGenres
 ) : ViewModel() {
 
-//    fun discoverMovies(withCast: String): LiveData<PagingData<Movie>> = liveData {
-//        emitSource(
-//            discoverMoviesUseCase.invoke(withCast).cachedIn(viewModelScope).asLiveData()
-//        )
-//    }
-
     fun getGenres(): LiveData<Resource<Genres>> = liveData {
         emitSource(
             getGenresUseCase.invoke().asLiveData()
         )
     }
 
-
     private val _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>> = _movies
 
-//    init {
-//        viewModelScope.launch {
-//            discoverMoviesUseCase.invoke("500").onEach {
-//                _movies.value = it
-//            }
-//        }
-//    }
-
-    fun getData(withCast: String, sortBy: String = "popularity.desc", minVoteCount: Int = 100) {
+    fun getData(
+        releaseYear: Int?,
+        sortBy: String = "popularity.desc",
+        minVoteCount: Int = 0,
+        withGenre: String = "",
+        voteAverage: Int = 0
+    ) {
         viewModelScope.launch {
-            discoverMoviesUseCase.invoke(withCast, sortBy, minVoteCount).cachedIn(viewModelScope).collect {
-                _movies.value = it
-            }
+            discoverMoviesUseCase.invoke(releaseYear, sortBy, minVoteCount, withGenre, voteAverage).cachedIn(viewModelScope)
+                .collect {
+                    _movies.value = it
+                }
         }
     }
 }

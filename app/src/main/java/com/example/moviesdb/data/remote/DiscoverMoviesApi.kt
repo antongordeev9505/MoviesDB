@@ -10,9 +10,11 @@ interface DiscoverMoviesApi {
     @GET("discover/movie")
     suspend fun discoverMovies(
         @Query("page") page: Int,
-        @Query("with_cast") withCast: String,
+        @Query("primary_release_year") releaseYear: Int?,
         @Query("sort_by") sortBy: String,
-        @Query("vote_count.gte") minVoteCount: Int
+        @Query("vote_count.gte") minVoteCount: Int,
+        @Query("with_genres") withGenre: String,
+        @Query("vote_average.gte") voteAverage: Int
     ): ListMoviesDto
 
     @GET("genre/movie/list")

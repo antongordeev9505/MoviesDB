@@ -51,10 +51,10 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
     }
 
     private fun showDialog() {
-        val fragmentManager = parentFragmentManager ?: return
+        val fragmentManager = parentFragmentManager
 
         val dialog = DiscoverMoviesDialogFragment()
-
+//        binding.textViewDiscover.isVisible = false
         dialog.show(fragmentManager, null)
     }
 
@@ -64,11 +64,13 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
             binding.apply {
                 //when the list is refreshing with new data set
                 progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                textViewDiscover.isVisible = loadState.source.refresh !is LoadState.Loading
                 //loading is finished and the state is not error
                 listRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
                 //if there is not internet connection
                 retryButton.isVisible = loadState.source.refresh is LoadState.Error
                 textViewError.isVisible = loadState.source.refresh is LoadState.Error
+                textViewDiscover.isVisible = adapter.itemCount < 1
 
                 //empty view
                 if (loadState.source.refresh is LoadState.NotLoading &&
@@ -77,6 +79,7 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
                     adapter.itemCount < 1) {
                     listRecyclerView.isVisible = false
                     textViewEmpty.isVisible = true
+                    textViewDiscover.isVisible = false
                 } else {
                     textViewEmpty.isVisible = false
                 }
@@ -85,10 +88,6 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
     }
 
     private fun initObserver() {
-//        discoverViewModel.discoverMovies().observe(viewLifecycleOwner, Observer {
-//            adapter.submitData(viewLifecycleOwner.lifecycle, it)
-//        })
-
         discoverViewModel.movies.observe(viewLifecycleOwner, Observer {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         })

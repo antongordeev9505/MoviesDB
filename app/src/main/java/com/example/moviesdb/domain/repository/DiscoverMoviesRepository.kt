@@ -8,7 +8,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface DiscoverMoviesRepository {
 
-    fun discoverMovies(withCast: String, sortBy: String, minVoteCount: Int): Flow<PagingData<Movie>>
+    fun discoverMovies(
+        releaseYear: Int?,
+        sortBy: String,
+        minVoteCount: Int,
+        withGenre: String,
+        voteAverage: Int
+    ): Flow<PagingData<Movie>>
 
     fun getGenres(): Flow<Resource<Genres>>
 }

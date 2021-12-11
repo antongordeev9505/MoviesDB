@@ -18,13 +18,28 @@ class DiscoverMoviesRepositoryImpl(
     private val api: DiscoverMoviesApi
 ) : DiscoverMoviesRepository {
 
-    override fun discoverMovies(withCast: String, sortBy: String, minVoteCount: Int) = Pager(
+    override fun discoverMovies(
+        releaseYear: Int?,
+        sortBy: String,
+        minVoteCount: Int,
+        withGenre: String,
+        voteAverage: Int
+    ) = Pager(
         config = PagingConfig(
             pageSize = 20,
             maxSize = 100,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = { DiscoverPagingSource(api, withCast, sortBy, minVoteCount ) }
+        pagingSourceFactory = {
+            DiscoverPagingSource(
+                api,
+                releaseYear,
+                sortBy,
+                minVoteCount,
+                withGenre,
+                voteAverage
+            )
+        }
 
     ).flow
 
