@@ -8,7 +8,12 @@ import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
 
-class DiscoverPagingSource(private val withCast: String, private val sortBy: String, private val api: DiscoverMoviesApi) :
+class DiscoverPagingSource(
+    private val api: DiscoverMoviesApi,
+    private val withCast: String,
+    private val sortBy: String,
+    private val minVoteCount: Int
+) :
     PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
@@ -16,7 +21,7 @@ class DiscoverPagingSource(private val withCast: String, private val sortBy: Str
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = api.discoverMovies(position, withCast, sortBy)
+            val response = api.discoverMovies(position, withCast, sortBy, minVoteCount)
             val movies = response.results.map { it.toMovie() }
 
             LoadResult.Page(

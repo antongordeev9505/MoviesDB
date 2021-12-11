@@ -26,6 +26,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetGenresUseCase(repository: DiscoverMoviesRepository): GetGenres {
+        return GetGenres(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideDiscoverMoviesUseCase(repository: DiscoverMoviesRepository): DiscoverMovies {
         return DiscoverMovies(repository)
     }

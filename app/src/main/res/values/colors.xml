@@ -16,4 +16,9 @@
     <color name="light_gray">#DCDCDC</color>
     <color name="azure">#F0FFFF</color>
 
+
+    <color name="whiteAlpha">#10FFFFFF</color>
+    <color name="mediumGray">#D1D1D1</color>
+    <color name="darkGray">#858585</color>
+
 </resources>
