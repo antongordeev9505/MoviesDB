@@ -11,4 +11,6 @@ interface MainMovieRepository {
     suspend fun insertMovie(movieId: Int): Flow<Resource<String>>
 
     suspend fun getAllMovies(): Flow<Resource<List<Movie>>>
+
+    suspend fun deleteMovie(id: Int)
 }

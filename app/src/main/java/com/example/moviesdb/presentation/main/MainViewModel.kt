@@ -3,6 +3,7 @@ package com.example.moviesdb.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.domain.use_case.DeleteMovieFromList
 import com.example.moviesdb.domain.use_case.GetMoviesFromWatchList
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val moviesFromWatchListUseCase: GetMoviesFromWatchList
+    private val moviesFromWatchListUseCase: GetMoviesFromWatchList,
+    private val deleteMovieUseCase: DeleteMovieFromList
 ) : ViewModel() {
 
     private val _movies = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading)
@@ -37,4 +39,10 @@ class MainViewModel @Inject constructor(
 //        started = SharingStarted.WhileSubscribed(5000),
 //        initialValue = Resource.Loading
 //    )
+
+    fun deleteMovie(movieId: Int) {
+        viewModelScope.launch {
+            deleteMovieUseCase.invoke(movieId)
+        }
+    }
 }

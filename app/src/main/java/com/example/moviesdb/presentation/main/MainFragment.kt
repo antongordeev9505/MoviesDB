@@ -12,18 +12,19 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentMainBinding
 import com.example.moviesdb.presentation.adapters.WatchListAdapter
+import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainFragment : Fragment(R.layout.fragment_main) {
+class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemClickListener {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     lateinit var viewModel: MainViewModel
-    private val adapter = WatchListAdapter()
+    private val adapter = WatchListAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +43,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 viewModel.movies.collect {
                     when(it) {
                         is Resource.Success -> {
-                            Log.d("dwdwdawdw", it.data.toString())
                             adapter.submitList(it.data)
                         }
                         is Resource.Error -> {
@@ -51,9 +51,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                         else -> Unit
                     }
                 }
-
             }
         }
+    }
+
+    override fun onItemClick(id: Int) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, DetailMovieFragment.newInstance(id))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun deleteMovie(id: Int) {
+        viewModel.deleteMovie(id)
     }
 
     override fun onDestroyView() {

@@ -9,9 +9,10 @@ import com.bumptech.glide.Glide
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.MovieMainScreenItemBinding
 import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.util.createAndShowDialog
 import com.example.moviesdb.util.useGlide
 
-class WatchListAdapter() :
+class WatchListAdapter(private val listener: OnItemClickListener) :
     ListAdapter<Movie, WatchListAdapter.ViewHolder>(
         Comparator()
     ) {
@@ -34,6 +35,17 @@ class WatchListAdapter() :
         if (currentItem != null) {
             holder.bind(currentItem)
         }
+
+        holder.itemView.setOnClickListener {
+            currentItem.id?.let { id -> listener.onItemClick(id) }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            createAndShowDialog(holder.itemView.context,
+                "Delete ${currentItem.original_title} from watch list?",
+                onPositiveAction = { currentItem.id?.let { id -> listener.deleteMovie(id) } })
+            return@setOnLongClickListener true
+        }
     }
 
     class ViewHolder(private val binding: MovieMainScreenItemBinding) :
@@ -49,6 +61,11 @@ class WatchListAdapter() :
                 )
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(id: Int)
+        fun deleteMovie(id: Int)
     }
 
     class Comparator : DiffUtil.ItemCallback<Movie>() {

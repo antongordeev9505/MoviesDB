@@ -45,4 +45,8 @@ class MainMovieRepositoryImpl(
             }
         }
     }
+
+    override suspend fun deleteMovie(id: Int) {
+        dao.deleteMovie(id)
+    }
 }

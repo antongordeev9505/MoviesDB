@@ -13,8 +13,8 @@ interface MoviesDbDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: MovieEntity)
 
-//    @Query("DELETE FROM movie WHERE id = :id")
-//    suspend fun deleteAllMovies(id: Int)
+    @Query("DELETE FROM movie WHERE id = :id")
+    suspend fun deleteMovie(id: Int)
 
     @Query("SELECT * FROM movie")
     fun getAllMovies(): Flow<List<MovieEntity>>
