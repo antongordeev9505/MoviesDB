@@ -8,10 +8,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
 import com.example.moviesdb.presentation.adapters.*
+import com.example.moviesdb.presentation.main.MainViewModel
 import com.example.moviesdb.util.Resource
 import com.example.moviesdb.util.useGlide
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +27,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     private val castAdapter = CastAdapter()
     private val recommendationsAdapter = RecommendationsAdapter()
     private val imagesAdapter = ImagesAdapter()
+    private var movieExistInWatchList = false
 
     companion object {
         const val EXTRA_MOVIE_ID = "EXTRA MOVIE ID"
@@ -230,6 +231,28 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                 }
             }
         })
+
+        viewModel.checkMovie(movieId).observe(viewLifecycleOwner, {
+            binding.apply {
+                when (it) {
+                    is Resource.Success -> {
+                        if (it.data) {
+                            movieExistInWatchList = true
+                            addToWatchList.text = resources.getString(R.string.remove_from_list)
+                            addToWatchList.setBackgroundColor(resources.getColor(R.color.green))
+                        } else {
+                            movieExistInWatchList = false
+                            addToWatchList.text = resources.getString(R.string.add_to_watch_list)
+                            addToWatchList.setBackgroundColor(resources.getColor(R.color.black))
+                        }
+                    }
+                    is Resource.Error -> {
+                        Log.d("problem", "problem")
+                    }
+                    else -> Unit
+                }
+            }
+        })
     }
 
     private fun initUi(movieId: Int?) {
@@ -241,17 +264,21 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
             addToWatchList.setOnClickListener {
                 movieId?.let {
-                    viewModel.insertMovieToList(movieId).observe(viewLifecycleOwner, Observer {
-                        when(it) {
-                            is Resource.Success -> {
-                                Toast.makeText(context, it.data, Toast.LENGTH_SHORT).show()
+                    if (!movieExistInWatchList) {
+                        viewModel.insertMovieToList(movieId).observe(viewLifecycleOwner, {
+                            when(it) {
+                                is Resource.Success -> {
+                                    Toast.makeText(context, it.data, Toast.LENGTH_SHORT).show()
+                                }
+                                is Resource.Error -> {
+                                    Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                                }
+                                else -> Unit
                             }
-                            is Resource.Error -> {
-                                Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
-                            }
-                            else -> Unit
-                        }
-                    })
+                        })
+                    } else {
+                        viewModel.deleteMovie(movieId)
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.example.moviesdb.data.repository
 
+import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.data.remote.DetailMovieApi
 import com.example.moviesdb.data.remote.dto.CastByMovieDto
 import com.example.moviesdb.domain.model.CastByMovie
@@ -8,16 +9,23 @@ import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.model.MovieDetails
 import com.example.moviesdb.domain.repository.DetailMovieRepository
 import com.example.moviesdb.util.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
 
 private const val LANGUAGE = "en,null"
 
 class DetailMovieRepositoryImpl(
-    private val api: DetailMovieApi
+    private val api: DetailMovieApi,
+    private val db: MoviesDbDatabase
 ) : DetailMovieRepository {
+
+    private val dao = db.dao
 
     override fun getRecommendations(
         movieId: Int
@@ -96,6 +104,19 @@ class DetailMovieRepositoryImpl(
 
         } catch (error: IOException) {
             emit(Resource.Error(exception = error.toString()))
+        }
+    }
+
+    override suspend fun checkMovieInWatchList(movieId: Int): Flow<Resource<Boolean>> {
+        return try {
+            val result = dao.existItem(movieId).map {
+                Resource.Success(it)
+            }
+            result
+        } catch (error: Exception) {
+            flow {
+                Resource.Error(error.toString())
+            }
         }
     }
 }

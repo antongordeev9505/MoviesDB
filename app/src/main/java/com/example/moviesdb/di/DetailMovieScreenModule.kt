@@ -1,5 +1,6 @@
 package com.example.moviesdb.di
 
+import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.data.remote.DetailMovieApi
 import com.example.moviesdb.data.repository.DetailMovieRepositoryImpl
 import com.example.moviesdb.domain.repository.DetailMovieRepository
@@ -14,6 +15,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DetailMovieScreenModule {
+
+    @Provides
+    @Singleton
+    fun provideCheckMovieInWatchListUseCase(repository: DetailMovieRepository): CheckMovieInWatchList {
+        return CheckMovieInWatchList(repository)
+    }
 
     @Provides
     @Singleton
@@ -56,8 +63,9 @@ object DetailMovieScreenModule {
     @Provides
     @Singleton
     fun provideDetailMovieRepository(
-        api: DetailMovieApi
+        api: DetailMovieApi,
+        db: MoviesDbDatabase
     ): DetailMovieRepository {
-        return DetailMovieRepositoryImpl(api)
+        return DetailMovieRepositoryImpl(api, db)
     }
 }

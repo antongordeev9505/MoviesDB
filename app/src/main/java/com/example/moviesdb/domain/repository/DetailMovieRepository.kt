@@ -16,4 +16,6 @@ interface DetailMovieRepository {
     fun getCastByMovie(movieId: Int): Flow<Resource<CastByMovie>>
 
     fun getMovieDetails(movieId: Int): Flow<Resource<MovieDetails>>
+
+    suspend fun checkMovieInWatchList(movieId: Int): Flow<Resource<Boolean>>
 }

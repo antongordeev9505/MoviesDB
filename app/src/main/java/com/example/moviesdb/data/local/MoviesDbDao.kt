@@ -1,6 +1,5 @@
 package com.example.moviesdb.data.local
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -18,4 +17,7 @@ interface MoviesDbDao {
 
     @Query("SELECT * FROM movie")
     fun getAllMovies(): Flow<List<MovieEntity>>
+
+    @Query("SELECT EXISTS (SELECT 1 FROM movie WHERE id = :id)")
+    fun existItem(id: Int): Flow<Boolean>
 }

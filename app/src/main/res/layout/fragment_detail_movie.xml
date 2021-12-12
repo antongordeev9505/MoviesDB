@@ -320,7 +320,7 @@
                 android:layout_marginTop="@dimen/dimen_16dp"
                 android:layout_marginEnd="@dimen/dimen_8dp"
                 android:padding="@dimen/dimen_4dp"
-                android:text="@string/add_to_watch_list"
+                android:text="@string/remove_from_list"
                 app:cornerRadius="@dimen/dimen_8dp"
                 app:layout_constraintBottom_toBottomOf="@id/add_to_custom_list"
                 app:layout_constraintEnd_toStartOf="@id/add_to_custom_list"
