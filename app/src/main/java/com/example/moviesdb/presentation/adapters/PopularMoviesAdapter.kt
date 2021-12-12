@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.MovieItemBinding
 import com.example.moviesdb.domain.model.Movie
+import com.example.moviesdb.util.useGlide
 
 class PopularMoviesAdapter(private val listener: OnItemClickListener) :
     PagingDataAdapter<Movie, PopularMoviesAdapter.PopularMoviesViewHolder>(
@@ -48,7 +49,7 @@ class PopularMoviesAdapter(private val listener: OnItemClickListener) :
                     val item = getItem(position)
 
                     if (item != null) {
-                        listener.onItemClick(item.id)
+                        item.id?.let { id -> listener.onItemClick(id) }
                     }
                 }
             }
@@ -65,13 +66,11 @@ class PopularMoviesAdapter(private val listener: OnItemClickListener) :
                     voteAverage.text = movie.vote_average.toString()
                 }
 
-                Glide.with(itemView.context)
-                    .load("$POSTER_IMAGE_PATH_PREFIX${movie.poster_path}")
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_baseline_image_24)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_baseline_error_24)
-                    .into(moviePosterImageView)
+                useGlide(
+                    itemView.context,
+                    "$POSTER_IMAGE_PATH_PREFIX${movie.poster_path}",
+                    moviePosterImageView
+                )
             }
         }
     }

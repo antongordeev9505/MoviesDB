@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 interface MoviesDbDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovies(movies: List<MovieEntity>)
+    suspend fun insertMovie(movie: MovieEntity)
 
-    @Query("DELETE FROM movie")
-    suspend fun deleteAllMovies()
+//    @Query("DELETE FROM movie WHERE id = :id")
+//    suspend fun deleteAllMovies(id: Int)
 
     @Query("SELECT * FROM movie")
-    suspend fun getAllPopularMovies(): List<MovieEntity>
+    fun getAllMovies(): Flow<List<MovieEntity>>
 }

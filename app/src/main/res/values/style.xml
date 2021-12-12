@@ -55,4 +55,10 @@
         <item name="rippleColor">@color/whiteAlpha</item>
     </style>
 
+    <style name="TitleTextMainScreenStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/dimen_20sp</item>
+        <item name="android:textColor">@color/titleColor</item>
+    </style>
+
 </resources>

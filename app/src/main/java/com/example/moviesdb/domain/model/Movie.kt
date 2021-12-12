@@ -2,7 +2,7 @@ package com.example.moviesdb.domain.model
 
 data class Movie(
     val genre_ids: List<Int>?,
-    val id: Int,
+    val id: Int?,
     val original_title: String?,
     val overview: String?,
     val popularity: Double?,

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.CastItemBinding
 import com.example.moviesdb.domain.model.CastByMovie
+import com.example.moviesdb.util.useGlide
 
 
 class CastAdapter() :
@@ -43,12 +44,11 @@ class CastAdapter() :
                 actor.text = cast.name
                 character.text = cast.character
 
-
-                    Glide.with(itemView.context)
-                        .load("$IMAGE_PATH_PREFIX${cast.profile_path}")
-                        .placeholder(R.drawable.poster_image)
-                        .error(R.drawable.poster_image)
-                        .into(image)
+                useGlide(
+                    itemView.context,
+                    "$IMAGE_PATH_PREFIX${cast.profile_path}",
+                    image
+                )
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.moviesdb.data.remote.dto
 
+import com.example.moviesdb.data.local.MovieEntity
 import com.example.moviesdb.domain.model.MovieDetails
 
 data class MovieDetailDto(
@@ -18,6 +19,15 @@ data class MovieDetailDto(
     val vote_average: Double?,
     val vote_count: Int?
 ) {
+    fun toMovieEntity(): MovieEntity {
+        return MovieEntity(
+            id = id,
+            original_title = original_title,
+            overview = overview,
+            poster_path = poster_path as String?,
+            vote_average = vote_average
+        )
+    }
 
     fun toMovieDetails(): MovieDetails {
         return MovieDetails(

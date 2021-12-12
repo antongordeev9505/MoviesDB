@@ -8,10 +8,7 @@ import com.example.moviesdb.domain.model.CastByMovie
 import com.example.moviesdb.domain.model.ImagesByMovie
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.domain.model.MovieDetails
-import com.example.moviesdb.domain.use_case.GetCastByMovie
-import com.example.moviesdb.domain.use_case.GetImagesByMovie
-import com.example.moviesdb.domain.use_case.GetMovieDetails
-import com.example.moviesdb.domain.use_case.GetRecommendation
+import com.example.moviesdb.domain.use_case.*
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -22,8 +19,17 @@ class DetailMovieViewModel @Inject constructor(
     private val getRecommendationUseCase: GetRecommendation,
     private val getImagesByMovieUseCase: GetImagesByMovie,
     private val getCastByMovieUseCase: GetCastByMovie,
-    private val getMovieDetailsUseCase: GetMovieDetails
+    private val getMovieDetailsUseCase: GetMovieDetails,
+    private val insertMovieToListUseCase: InsertMovieToList
 ) : ViewModel() {
+
+    fun insertMovieToList(
+        movieId: Int
+    ): LiveData<Resource<String>> = liveData {
+        emitSource(
+            insertMovieToListUseCase.invoke(movieId).asLiveData()
+        )
+    }
 
     fun getRecommendation(
         movieId: Int

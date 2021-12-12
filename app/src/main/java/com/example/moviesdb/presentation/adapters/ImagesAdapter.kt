@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.ImageItemBinding
 import com.example.moviesdb.domain.model.ImagesByMovie
+import com.example.moviesdb.util.useGlide
 
 class ImagesAdapter() :
     ListAdapter<ImagesByMovie.Backdrop, ImagesAdapter.ViewHolder>(
@@ -39,11 +40,11 @@ class ImagesAdapter() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(image: ImagesByMovie.Backdrop) {
             binding.apply {
-                Glide.with(itemView.context)
-                    .load("$IMAGE_PATH_PREFIX${image.file_path}")
-                    .placeholder(R.drawable.poster_image)
-                    .error(R.drawable.poster_image)
-                    .into(imageItem)
+                useGlide(
+                    itemView.context,
+                    "$IMAGE_PATH_PREFIX${image.file_path}",
+                    imageItem
+                )
             }
         }
     }

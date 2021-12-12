@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesdb.R
-import com.example.moviesdb.databinding.RecommendationItemBinding
+import com.example.moviesdb.databinding.MovieMainScreenItemBinding
 import com.example.moviesdb.domain.model.Movie
 import com.example.moviesdb.util.useGlide
 
-class RecommendationsAdapter() :
-    ListAdapter<Movie, RecommendationsAdapter.ViewHolder>(
+class WatchListAdapter() :
+    ListAdapter<Movie, WatchListAdapter.ViewHolder>(
         Comparator()
     ) {
 
@@ -24,7 +24,7 @@ class RecommendationsAdapter() :
         parent: ViewGroup, viewType: Int
     ): ViewHolder {
         val binding =
-            RecommendationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            MovieMainScreenItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }
@@ -36,7 +36,7 @@ class RecommendationsAdapter() :
         }
     }
 
-    class ViewHolder(private val binding: RecommendationItemBinding) :
+    class ViewHolder(private val binding: MovieMainScreenItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.apply {

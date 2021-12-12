@@ -3,6 +3,7 @@ package com.example.moviesdb.presentation.detail_movie
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -10,11 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
-import com.example.moviesdb.presentation.adapters.CastAdapter
-import com.example.moviesdb.presentation.adapters.GenreAdapter
-import com.example.moviesdb.presentation.adapters.ImagesAdapter
-import com.example.moviesdb.presentation.adapters.RecommendationsAdapter
+import com.example.moviesdb.presentation.adapters.*
 import com.example.moviesdb.util.Resource
+import com.example.moviesdb.util.useGlide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,12 +49,6 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
         val movieId: Int?
         arguments.let {
             movieId = arguments?.getInt(EXTRA_MOVIE_ID)
-        }
-        binding.apply {
-            recyclerviewGenre.adapter = adapter
-            recyclerviewCast.adapter = castAdapter
-            recyclerviewRecommendations.adapter = recommendationsAdapter
-            recyclerviewImages.adapter = imagesAdapter
         }
 
         initUi(movieId)
@@ -133,23 +126,21 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
 
 
-
-
-                            Glide.with(view.context)
-                                .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}")
-                                .placeholder(R.drawable.poster_image)
-                                .error(R.drawable.ic_baseline_error_24)
-                                .into(imageToolbar)
+                            useGlide(
+                                view.context,
+                                "${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}",
+                                imageToolbar
+                            )
                         }
 
                     }
 
                     view?.let { view ->
-                        Glide.with(view.context)
-                            .load("${POSTER_IMAGE_PATH_PREFIX}${detailMovie.poster_path}")
-                            .placeholder(R.drawable.poster_image)
-                            .error(R.drawable.poster_image)
-                            .into(binding.poster)
+                        useGlide(
+                            view.context,
+                            "${POSTER_IMAGE_PATH_PREFIX}${detailMovie.poster_path}",
+                            binding.poster
+                        )
                     }
 
 
@@ -242,8 +233,28 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     }
 
     private fun initUi(movieId: Int?) {
+        binding.apply {
+            recyclerviewGenre.adapter = adapter
+            recyclerviewCast.adapter = castAdapter
+            recyclerviewRecommendations.adapter = recommendationsAdapter
+            recyclerviewImages.adapter = imagesAdapter
 
-
+            addToWatchList.setOnClickListener {
+                movieId?.let {
+                    viewModel.insertMovieToList(movieId).observe(viewLifecycleOwner, Observer {
+                        when(it) {
+                            is Resource.Success -> {
+                                Toast.makeText(context, it.data, Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                            }
+                            else -> Unit
+                        }
+                    })
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
