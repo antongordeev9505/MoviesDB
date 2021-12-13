@@ -54,7 +54,6 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
         val fragmentManager = parentFragmentManager
 
         val dialog = DiscoverMoviesDialogFragment()
-//        binding.textViewDiscover.isVisible = false
         dialog.show(fragmentManager, null)
     }
 

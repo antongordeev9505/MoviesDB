@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
 import com.example.moviesdb.presentation.adapters.*
+import com.example.moviesdb.presentation.detail_movie.dialog.AddMovieToCustomListDialogFragment
+import com.example.moviesdb.presentation.discover.dialog.DiscoverMoviesDialogFragment
 import com.example.moviesdb.presentation.main.MainViewModel
 import com.example.moviesdb.util.Resource
 import com.example.moviesdb.util.useGlide
@@ -281,7 +283,20 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                     }
                 }
             }
+
+            addToCustomList.setOnClickListener {
+                movieId?.let {
+                    showDialog(movieId)
+                }
+            }
         }
+    }
+
+    private fun showDialog(movieId: Int) {
+        val fragmentManager = parentFragmentManager
+
+        val dialog = AddMovieToCustomListDialogFragment.newInstance(movieId)
+        dialog.show(fragmentManager, null)
     }
 
     override fun onDestroyView() {

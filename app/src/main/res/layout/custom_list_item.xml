@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/dimen_4dp"
+    app:cardCornerRadius="@dimen/dimen_4dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <TextView
+        android:id="@+id/custom_list_title"
+        style="@style/TitleTextMainScreenStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@string/title_of_list" />
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerview_list_movies"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="@dimen/dimen_4dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/custom_list_title"-->
+<!--        tools:listitem="@layout/movie_main_screen_item" />-->
+
+<!--    <View-->
+<!--        android:id="@+id/bottom_selector_list"-->
+<!--        android:layout_width="@dimen/dimen_0dp"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginTop="@dimen/dimen_8dp"-->
+<!--        android:background="@drawable/selector_detail_screen"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/recyclerview_list_movies" />-->
+
+</androidx.cardview.widget.CardView>

@@ -11,8 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentMainBinding
+import com.example.moviesdb.presentation.adapters.CustomListsAdapter
 import com.example.moviesdb.presentation.adapters.WatchListAdapter
 import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
+import com.example.moviesdb.presentation.main.dialog.AddCustomListDialogFragment
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -25,6 +27,8 @@ class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemCl
     private val binding get() = _binding!!
     lateinit var viewModel: MainViewModel
     private val adapter = WatchListAdapter(this)
+    private val customListAdapter = CustomListsAdapter()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,8 +37,10 @@ class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemCl
 
         _binding = FragmentMainBinding.bind(view)
         binding.recyclerviewWatchList.adapter = adapter
+        binding.recyclerviewCustomLists.adapter = customListAdapter
 
         initObservers()
+        initListeners()
     }
 
     private fun initObservers() {
@@ -53,6 +59,38 @@ class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemCl
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.lists.collect {
+                    when(it) {
+                        is Resource.Success -> {
+                            Log.d("proverkaobserve", it.data.toString())
+                            customListAdapter.submitList(it.data)
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initListeners() {
+        binding.apply {
+            fab.setOnClickListener {
+                showDialog()
+            }
+        }
+    }
+
+    private fun showDialog() {
+        val fragmentManager = parentFragmentManager
+
+        val dialog = AddCustomListDialogFragment()
+        dialog.show(fragmentManager, null)
     }
 
     override fun onItemClick(id: Int) {

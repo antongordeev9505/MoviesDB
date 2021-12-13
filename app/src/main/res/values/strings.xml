@@ -45,4 +45,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="remove_from_list">Remove from watch list</string>
+    <string name="add_new_custom_list">Add new custom list</string>
+    <string name="title_of_list">Title of list</string>
+    <string name="add_list">Add list</string>
+    <string name="add_to_list">Add to list...</string>
+    <string name="add_movie">Add movie</string>
 </resources>

@@ -1,16 +1,11 @@
 package com.example.moviesdb.presentation.detail_movie
 
 import androidx.lifecycle.*
-import com.example.moviesdb.domain.model.CastByMovie
-import com.example.moviesdb.domain.model.ImagesByMovie
-import com.example.moviesdb.domain.model.Movie
-import com.example.moviesdb.domain.model.MovieDetails
+import com.example.moviesdb.domain.model.*
 import com.example.moviesdb.domain.use_case.*
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +18,7 @@ class DetailMovieViewModel @Inject constructor(
     private val insertMovieToListUseCase: InsertMovieToList,
     private val checkMovieUseCase: CheckMovieInWatchList,
     private val deleteMovieUseCase: DeleteMovieFromList,
+    private val getAllListsUseCase: GetAllListItems
 ) : ViewModel() {
 
     fun insertMovieToList(
@@ -77,4 +73,14 @@ class DetailMovieViewModel @Inject constructor(
             deleteMovieUseCase.invoke(movieId)
         }
     }
+
+    val lists: StateFlow<Resource<List<CustomList>>> = flow {
+        getAllListsUseCase.invoke().collect {
+            emit(it)
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = Resource.Loading
+    )
 }
