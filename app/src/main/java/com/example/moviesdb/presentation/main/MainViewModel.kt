@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.moviesdb.domain.model.CustomList
 import com.example.moviesdb.domain.model.Movie
-import com.example.moviesdb.domain.use_case.DeleteMovieFromList
-import com.example.moviesdb.domain.use_case.GetAllListItems
-import com.example.moviesdb.domain.use_case.GetMoviesFromWatchList
-import com.example.moviesdb.domain.use_case.InsertCustomListItem
+import com.example.moviesdb.domain.use_case.*
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -19,7 +16,8 @@ class MainViewModel @Inject constructor(
     private val moviesFromWatchListUseCase: GetMoviesFromWatchList,
     private val deleteMovieUseCase: DeleteMovieFromList,
     private val insertListUseCase: InsertCustomListItem,
-    private val getAllListsUseCase: GetAllListItems
+    private val getAllListsUseCase: GetAllListItems,
+    private val deleteListUseCase: DeleteList,
 ) : ViewModel() {
 
     private val _movies = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading)
@@ -61,19 +59,15 @@ class MainViewModel @Inject constructor(
         initialValue = Resource.Loading
     )
 
-//    fun insertCustomList(
-//        listTitle: String
-//    ): LiveData<Resource<String>> = liveData {
-//        Log.d("proverkaVM", listTitle)
-//        emitSource(
-//            insertListUseCase.invoke(listTitle).asLiveData()
-//        )
-//    }
-
     fun insertCustomList(listTitle: String){
         viewModelScope.launch {
-                    Log.d("proverkaVM", listTitle)
             insertListUseCase.invoke(listTitle)
+        }
+    }
+
+    fun deleteList(idList: Int) {
+        viewModelScope.launch {
+            deleteListUseCase.invoke(idList)
         }
     }
 }

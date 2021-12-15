@@ -4,10 +4,7 @@ import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.data.remote.DetailMovieApi
 import com.example.moviesdb.data.repository.MainMovieRepositoryImpl
 import com.example.moviesdb.domain.repository.MainMovieRepository
-import com.example.moviesdb.domain.use_case.DeleteMovieFromList
-import com.example.moviesdb.domain.use_case.GetAllListItems
-import com.example.moviesdb.domain.use_case.GetMoviesFromWatchList
-import com.example.moviesdb.domain.use_case.InsertCustomListItem
+import com.example.moviesdb.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +14,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MainScreenModule {
+
+    @Provides
+    @Singleton
+    fun provideDeleteListUseCAse(repository: MainMovieRepository): DeleteList {
+        return DeleteList(repository)
+    }
 
     @Provides
     @Singleton

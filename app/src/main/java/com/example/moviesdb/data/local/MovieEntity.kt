@@ -11,7 +11,7 @@ data class MovieEntity(
     val poster_path: String?,
     val overview: String?,
     val vote_average: Double?,
-    val idList: Int? = null
+    val idList: Int?
 ) {
     fun toMovie(): Movie {
         return Movie(
@@ -23,7 +23,8 @@ data class MovieEntity(
             genre_ids = null,
             popularity = null,
             release_date = null,
-            vote_count = null
+            vote_count = null,
+            idList = idList
         )
     }
 }

@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="@dimen/dimen_16dp" />
+        app:layout_constraintGuide_begin="@dimen/dimen_8dp" />
 
     <TextView
         android:id="@+id/watch_list_title"
@@ -35,15 +35,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintEnd_toEndOf="@id/content_end"
         app:layout_constraintStart_toStartOf="@id/content_start"
-        app:layout_constraintTop_toBottomOf="@id/content_top" />
-
-    <TextView
-        android:id="@+id/show_all_watch_list"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/show_all"
-        app:layout_constraintBaseline_toBaselineOf="@id/watch_list_title"
-        app:layout_constraintEnd_toEndOf="@id/content_end"
         app:layout_constraintTop_toBottomOf="@id/content_top" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -68,6 +59,17 @@
         app:layout_constraintStart_toStartOf="@id/content_start"
         app:layout_constraintTop_toBottomOf="@id/recyclerview_watch_list" />
 
+    <TextView
+        android:id="@+id/my_lists_title"
+        style="@style/TitleTextMainScreenStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/my_lists"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@id/content_end"
+        app:layout_constraintStart_toStartOf="@id/content_start"
+        app:layout_constraintTop_toBottomOf="@id/bottom_selector_watch_list" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_custom_lists"
         android:layout_width="0dp"
@@ -76,7 +78,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@id/content_end"
         app:layout_constraintStart_toStartOf="@id/content_start"
-        app:layout_constraintTop_toBottomOf="@id/bottom_selector_watch_list"
+        app:layout_constraintTop_toBottomOf="@id/my_lists_title"
         tools:listitem="@layout/custom_list_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

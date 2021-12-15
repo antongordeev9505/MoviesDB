@@ -20,4 +20,7 @@ interface MoviesDbDao {
 
     @Query("SELECT EXISTS (SELECT 1 FROM movie WHERE id = :id)")
     fun existItem(id: Int): Flow<Boolean>
+
+    @Query("DELETE FROM movie WHERE idList = :listId")
+    suspend fun deleteMoviesWithList(listId: Int)
 }

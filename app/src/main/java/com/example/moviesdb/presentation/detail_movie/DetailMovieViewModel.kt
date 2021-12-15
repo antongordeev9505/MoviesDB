@@ -22,10 +22,11 @@ class DetailMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun insertMovieToList(
-        movieId: Int
+        movieId: Int,
+        listId: Int = 0
     ): LiveData<Resource<String>> = liveData {
         emitSource(
-            insertMovieToListUseCase.invoke(movieId).asLiveData()
+            insertMovieToListUseCase.invoke(movieId, listId).asLiveData()
         )
     }
 

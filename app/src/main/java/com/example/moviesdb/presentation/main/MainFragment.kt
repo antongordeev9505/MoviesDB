@@ -14,6 +14,7 @@ import com.example.moviesdb.databinding.FragmentMainBinding
 import com.example.moviesdb.presentation.adapters.CustomListsAdapter
 import com.example.moviesdb.presentation.adapters.WatchListAdapter
 import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
+import com.example.moviesdb.presentation.list_movies.ListMovieFragment
 import com.example.moviesdb.presentation.main.dialog.AddCustomListDialogFragment
 import com.example.moviesdb.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,13 +22,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemClickListener {
+class MainFragment : Fragment(R.layout.fragment_main),
+    WatchListAdapter.OnItemClickListener,
+    CustomListsAdapter.OnItemClickListener {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     lateinit var viewModel: MainViewModel
     private val adapter = WatchListAdapter(this)
-    private val customListAdapter = CustomListsAdapter()
+    private val customListAdapter = CustomListsAdapter(this)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +52,10 @@ class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemCl
                 viewModel.movies.collect {
                     when(it) {
                         is Resource.Success -> {
-                            adapter.submitList(it.data)
+                            val movies = it.data.filter { movie->
+                                movie.idList == 0
+                            }
+                            adapter.submitList(movies)
                         }
                         is Resource.Error -> {
                             Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
@@ -65,7 +71,6 @@ class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemCl
                 viewModel.lists.collect {
                     when(it) {
                         is Resource.Success -> {
-                            Log.d("proverkaobserve", it.data.toString())
                             customListAdapter.submitList(it.data)
                         }
                         is Resource.Error -> {
@@ -102,6 +107,17 @@ class MainFragment : Fragment(R.layout.fragment_main), WatchListAdapter.OnItemCl
 
     override fun deleteMovie(id: Int) {
         viewModel.deleteMovie(id)
+    }
+
+    override fun onItemListClick(listId: Int, listTitle: String) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, ListMovieFragment.newInstance(listId, listTitle))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun deleteList(listId: Int) {
+        viewModel.deleteList(listId)
     }
 
     override fun onDestroyView() {

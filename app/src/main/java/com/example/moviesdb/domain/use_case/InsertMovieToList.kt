@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 class InsertMovieToList(private val repository: MainMovieRepository) {
 
-    suspend operator fun invoke(movieId: Int): Flow<Resource<String>> =
-        repository.insertMovie(movieId)
+    suspend operator fun invoke(movieId: Int, listId: Int): Flow<Resource<String>> =
+        repository.insertMovie(movieId, listId)
 }

@@ -61,4 +61,10 @@
         <item name="android:textColor">@color/titleColor</item>
     </style>
 
+    <style name="TitleTextStyleItalic">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+        <item name="android:textColor">@color/titleColor</item>
+    </style>
+
 </resources>

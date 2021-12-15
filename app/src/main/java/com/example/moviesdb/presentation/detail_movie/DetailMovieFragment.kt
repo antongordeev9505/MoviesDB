@@ -242,10 +242,12 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                             movieExistInWatchList = true
                             addToWatchList.text = resources.getString(R.string.remove_from_list)
                             addToWatchList.setBackgroundColor(resources.getColor(R.color.green))
+                            addToCustomList.isVisible = false
                         } else {
                             movieExistInWatchList = false
                             addToWatchList.text = resources.getString(R.string.add_to_watch_list)
                             addToWatchList.setBackgroundColor(resources.getColor(R.color.black))
+                            addToCustomList.isVisible = true
                         }
                     }
                     is Resource.Error -> {

@@ -38,7 +38,8 @@ data class MovieDto(
             poster_path = poster_path,
             release_date = release_date,
             vote_average = vote_average,
-            vote_count = vote_count
+            vote_count = vote_count,
+            idList = null
         )
     }
 }

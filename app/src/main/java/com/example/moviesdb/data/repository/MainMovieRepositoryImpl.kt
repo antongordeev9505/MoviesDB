@@ -1,6 +1,7 @@
 package com.example.moviesdb.data.repository
 
 import android.util.Log
+import androidx.room.withTransaction
 import com.example.moviesdb.data.local.CustomListEntity
 import com.example.moviesdb.data.local.MoviesDbDatabase
 import com.example.moviesdb.data.remote.DetailMovieApi
@@ -20,10 +21,13 @@ class MainMovieRepositoryImpl(
     private val dao = db.dao
     private val daoCustomList = db.daoCustomList
 
-    override suspend fun insertMovie(movieId: Int): Flow<Resource<String>> = flow {
+    override suspend fun insertMovie(movieId: Int, listId: Int): Flow<Resource<String>> = flow {
         try {
             val movie = api.getMovieDetails(movieId).toMovieEntity()
-            dao.insertMovie(movie)
+            val movieToInsert = movie.copy(
+                idList = listId
+            )
+            dao.insertMovie(movieToInsert)
 
             emit(Resource.Success("${movie.original_title} added"))
 
@@ -97,6 +101,13 @@ class MainMovieRepositoryImpl(
             return flow {
                 Resource.Error(error.toString())
             }
+        }
+    }
+
+    override suspend fun deleteList(listId: Int) {
+        db.withTransaction {
+            dao.deleteMoviesWithList(listId)
+            daoCustomList.deleteList(listId)
         }
     }
 }

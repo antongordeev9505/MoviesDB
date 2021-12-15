@@ -2,6 +2,7 @@ package com.example.moviesdb.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,16 +10,13 @@ import com.example.moviesdb.databinding.CastItemBinding
 import com.example.moviesdb.databinding.CustomListItemBinding
 import com.example.moviesdb.domain.model.CastByMovie
 import com.example.moviesdb.domain.model.CustomList
+import com.example.moviesdb.util.createAndShowDialog
 import com.example.moviesdb.util.useGlide
 
-class CustomListsAdapter() :
+class CustomListsAdapter(private val listener: OnItemClickListener) :
     ListAdapter<CustomList, CustomListsAdapter.ViewHolder>(
         Comparator()
     ) {
-
-    companion object {
-        const val IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w300"
-    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
@@ -34,6 +32,17 @@ class CustomListsAdapter() :
         if (currentItem != null) {
             holder.bind(currentItem)
         }
+
+        holder.itemView.setOnClickListener {
+            currentItem.idList.let { id -> listener.onItemListClick(id, currentItem.title) }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            createAndShowDialog(holder.itemView.context,
+                "Delete ${currentItem.title} from the list of custom lists?",
+                onPositiveAction = { listener.deleteList(currentItem.idList) })
+            return@setOnLongClickListener true
+        }
     }
 
     class ViewHolder(private val binding: CustomListItemBinding) :
@@ -43,6 +52,11 @@ class CustomListsAdapter() :
                 customListTitle.text = listItem.title
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemListClick(listId: Int, listTitle: String)
+        fun deleteList(listId: Int)
     }
 
     class Comparator : DiffUtil.ItemCallback<CustomList>() {

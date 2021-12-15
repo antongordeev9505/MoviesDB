@@ -25,7 +25,8 @@ data class MovieDetailDto(
             original_title = original_title,
             overview = overview,
             poster_path = poster_path as String?,
-            vote_average = vote_average
+            vote_average = vote_average,
+            idList = null
         )
     }
 

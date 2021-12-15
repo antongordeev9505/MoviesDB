@@ -121,8 +121,22 @@ class AddMovieToCustomListDialogFragment : DialogFragment(R.layout.dialog_add_mo
     private fun initListeners() {
         binding.apply {
             addMovieButton.setOnClickListener {
+                movieId?.let { movieId ->
+                    listId?.let { listId ->
+                        viewModel.insertMovieToList(movieId, listId).observe(viewLifecycleOwner, {
+                            when(it) {
+                                is Resource.Success -> {
+                                    Toast.makeText(context, it.data, Toast.LENGTH_SHORT).show()
+                                }
+                                is Resource.Error -> {
+                                    Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                                }
+                                else -> Unit
+                            }
+                        })
+                    }
+                }
                 dismissAllowingStateLoss()
-                Toast.makeText(context, "$movieId and $listId", Toast.LENGTH_SHORT ).show()
             }
         }
     }

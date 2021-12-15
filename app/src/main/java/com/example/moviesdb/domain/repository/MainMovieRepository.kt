@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MainMovieRepository {
 
-    suspend fun insertMovie(movieId: Int): Flow<Resource<String>>
+    suspend fun insertMovie(movieId: Int, listId: Int): Flow<Resource<String>>
 
     suspend fun getAllMovies(): Flow<Resource<List<Movie>>>
 
@@ -18,4 +18,6 @@ interface MainMovieRepository {
     suspend fun insertCustomListItem(listItem: CustomList)
 
     suspend fun getAllListItems(): Flow<Resource<List<CustomList>>>
+
+    suspend fun deleteList(listId: Int)
 }
