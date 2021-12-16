@@ -188,6 +188,105 @@ viewLifecycleOwner.lifecycleScope.launch {
                         //...
 ```
 
+Иллюстрация фрагментов кода разметки экрана подробностей фильма
+```xml
+<com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/coord_layout_background"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleTextAppearance="@style/CollapsingTitle"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            app:titleCollapseMode="scale">
+    //...
+    
+<androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".presentation.detail_movie.DetailMovieFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/content_start"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/dimen_8dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/content_end"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/dimen_8dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/content_top"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/dimen_16dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/dimen_12dp"
+                app:cardElevation="@dimen/dimen_8dp"
+                app:layout_constraintEnd_toStartOf="@id/recyclerview_genre"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/content_start"
+                app:layout_constraintTop_toTopOf="@id/content_top">
+
+                <ImageView
+                    android:id="@+id/poster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/poster_image"
+                    android:src="@drawable/poster_image" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_genre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/card_view_poster"
+                app:layout_constraintTop_toTopOf="@id/content_top"
+                tools:listitem="@layout/genre_item" />
+    //...
+    
+     <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/cast_section_bottom_barrier"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="cast_text, recyclerview_cast, director" />
+
+            <View
+                android:id="@+id/selector_line_cast"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@drawable/selector_detail_screen"
+                app:layout_constraintEnd_toEndOf="@id/content_end"
+                app:layout_constraintStart_toStartOf="@id/content_start"
+                app:layout_constraintTop_toBottomOf="@id/cast_section_bottom_barrier" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/recommendations_group"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="@dimen/dimen_0dp"
+                app:constraint_referenced_ids="recommendations_text, recyclerview_recommendations, selector_line_recommendations"/>
+
+    //...
+
+```
+
 
 
 
