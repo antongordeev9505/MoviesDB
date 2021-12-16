@@ -40,18 +40,33 @@ class PopularMoviesViewModel @Inject constructor(
         moviesMediatorData.addSource(_popularMoviesLiveData) {
             moviesMediatorData.value = it
         }
+    }
 
-        moviesMediatorData.addSource(_searchMoviesLiveData) {
-            moviesMediatorData.value = it
+    private fun showPopularMoviesOnly() {
+        viewModelScope.launch {
+            moviesMediatorData.removeSource(_searchMoviesLiveData)
+            moviesMediatorData.removeSource(_popularMoviesLiveData)
+
+            moviesMediatorData.addSource(_popularMoviesLiveData) {
+                moviesMediatorData.value = it
+            }
+
         }
     }
 
     fun onSearchQuery(query: String) {
+        if (query.isEmpty()) {
+            showPopularMoviesOnly()
+        }
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DELAY_MILLIS)
             if (query.length > MIN_QUERY_LENGTH) {
+                moviesMediatorData.addSource(_searchMoviesLiveData) {
+                    moviesMediatorData.value = it
+                }
                 _searchFieldTextLiveData.value = query
+                moviesMediatorData.removeSource(_searchMoviesLiveData)
             }
         }
     }
