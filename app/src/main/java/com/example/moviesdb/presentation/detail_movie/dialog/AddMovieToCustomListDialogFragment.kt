@@ -17,6 +17,7 @@ import com.example.moviesdb.databinding.DialogAddMovieToCustomListBinding
 import com.example.moviesdb.domain.model.CustomList
 import com.example.moviesdb.presentation.detail_movie.DetailMovieViewModel
 import com.example.moviesdb.util.Resource
+import com.example.moviesdb.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -129,7 +130,7 @@ class AddMovieToCustomListDialogFragment : DialogFragment(R.layout.dialog_add_mo
                                     Toast.makeText(context, it.data, Toast.LENGTH_SHORT).show()
                                 }
                                 is Resource.Error -> {
-                                    Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                                    showToast(it.exception)
                                 }
                                 else -> Unit
                             }

@@ -1,7 +1,6 @@
 package com.example.moviesdb.presentation.detail_movie
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -12,9 +11,8 @@ import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentDetailMovieBinding
 import com.example.moviesdb.presentation.adapters.*
 import com.example.moviesdb.presentation.detail_movie.dialog.AddMovieToCustomListDialogFragment
-import com.example.moviesdb.presentation.discover.dialog.DiscoverMoviesDialogFragment
-import com.example.moviesdb.presentation.main.MainViewModel
 import com.example.moviesdb.util.Resource
+import com.example.moviesdb.util.showToast
 import com.example.moviesdb.util.useGlide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -61,6 +59,14 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
     }
 
     private fun initObservers(movieId: Int) {
+        getMovieDetails(movieId)
+        getRecommendation(movieId)
+        getImages(movieId)
+        getCastByMovie(movieId)
+        checkMovieInDb(movieId)
+    }
+
+    private fun getMovieDetails(movieId: Int) {
         viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner, Observer {
 
             when(it) {
@@ -75,7 +81,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                             tagline.text = detailMovie.tagline
                             overview.text = detailMovie.overview
 
-
+                            //vote average
                             val voteAverage = detailMovie.vote_average
                             if (voteAverage == 0.0 || voteAverage == null) {
                                 cardViewVote.isVisible = false
@@ -91,8 +97,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                             }
 
 
-
-
+                            //budget
                             if (detailMovie.budget == 0 || detailMovie.budget == null) {
                                 cardViewBudget.isVisible = false
                             } else {
@@ -106,7 +111,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                                 }
                             }
 
-
+                            //revenue
                             if (detailMovie.revenue == 0 || detailMovie.revenue == null) {
                                 cardViewRevenue.isVisible = false
                             } else {
@@ -120,6 +125,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                                 }
                             }
 
+                            //release date
                             if (detailMovie.release_date == null) {
                                 cardViewRevenue.isVisible = false
                             } else {
@@ -127,15 +133,13 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                                 releaseDate.text = date
                             }
 
-
-
+                            //images
                             useGlide(
                                 view.context,
                                 "${POSTER_IMAGE_PATH_PREFIX}${detailMovie.backdrop_path}",
                                 imageToolbar
                             )
                         }
-
                     }
 
                     view?.let { view ->
@@ -146,24 +150,24 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                         )
                     }
 
-
+                    //genre
                     detailMovie.genres.let { genre->
                         adapter.submitList(genre)
                     }
                 }
 
                 is Resource.Loading -> {
-                    Log.d("proverka", "Loading")
                 }
 
                 is Resource.Error -> {
-                    Log.d("proverka", "Error")
+                    showError()
                 }
-
                 else -> Unit
             }
         })
+    }
 
+    private fun getRecommendation(movieId: Int) {
         viewModel.getRecommendation(movieId).observe(viewLifecycleOwner, Observer {
             binding.apply {
                 when (it) {
@@ -179,12 +183,16 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                     }
 
                     is Resource.Error -> {
+                        showError()
                     }
                     else -> Unit
                 }
             }
         })
+    }
 
+
+    private fun getImages(movieId: Int) {
         viewModel.getImagesByMovie(movieId).observe(viewLifecycleOwner, Observer {
             binding.apply {
                 when (it) {
@@ -200,12 +208,16 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                     }
 
                     is Resource.Error -> {
+                        showError()
                     }
                     else -> Unit
                 }
             }
         })
 
+    }
+
+    private fun getCastByMovie(movieId: Int) {
         viewModel.getCastByMovie(movieId).observe(viewLifecycleOwner, Observer {
 
             binding.apply {
@@ -228,12 +240,17 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                     }
 
                     is Resource.Error -> {
+                        showError()
                     }
                     else -> Unit
                 }
             }
         })
+    }
 
+
+
+    private fun checkMovieInDb(movieId: Int) {
         viewModel.checkMovie(movieId).observe(viewLifecycleOwner, {
             binding.apply {
                 when (it) {
@@ -251,7 +268,7 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                         }
                     }
                     is Resource.Error -> {
-                        Log.d("problem", "problem")
+                        showError()
                     }
                     else -> Unit
                 }
@@ -272,10 +289,10 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
                         viewModel.insertMovieToList(movieId).observe(viewLifecycleOwner, {
                             when(it) {
                                 is Resource.Success -> {
-                                    Toast.makeText(context, it.data, Toast.LENGTH_SHORT).show()
+                                    showToast(it.data)
                                 }
                                 is Resource.Error -> {
-                                    Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                                    showToast(it.exception)
                                 }
                                 else -> Unit
                             }
@@ -299,6 +316,15 @@ class DetailMovieFragment : Fragment(R.layout.fragment_detail_movie) {
 
         val dialog = AddMovieToCustomListDialogFragment.newInstance(movieId)
         dialog.show(fragmentManager, null)
+    }
+
+    private var handled = false
+
+    private fun showError() {
+        if (!handled) {
+            showToast("Something went wrong")
+            handled = true
+        }
     }
 
     override fun onDestroyView() {

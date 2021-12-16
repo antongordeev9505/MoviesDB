@@ -70,7 +70,6 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies), Popula
     }
 
     private fun initLoadState() {
-        //show us the loadState (refresh data set)
         adapter.addLoadStateListener { loadState ->
             binding.apply {
                 //when the list is refreshing with new data set

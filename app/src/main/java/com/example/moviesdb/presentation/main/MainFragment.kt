@@ -12,11 +12,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.moviesdb.R
 import com.example.moviesdb.databinding.FragmentMainBinding
 import com.example.moviesdb.presentation.adapters.CustomListsAdapter
+import com.example.moviesdb.presentation.adapters.SpacingItemDecoration
 import com.example.moviesdb.presentation.adapters.WatchListAdapter
 import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
 import com.example.moviesdb.presentation.list_movies.ListMovieFragment
 import com.example.moviesdb.presentation.main.dialog.AddCustomListDialogFragment
 import com.example.moviesdb.util.Resource
+import com.example.moviesdb.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -39,11 +41,20 @@ class MainFragment : Fragment(R.layout.fragment_main),
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         _binding = FragmentMainBinding.bind(view)
+        initRV()
+        initObservers()
+        initListeners()
+    }
+
+    private fun initRV() {
         binding.recyclerviewWatchList.adapter = adapter
         binding.recyclerviewCustomLists.adapter = customListAdapter
 
-        initObservers()
-        initListeners()
+        resources.getDimensionPixelSize(R.dimen.dimen_8dp).let {
+            SpacingItemDecoration(it).let { spacing ->
+                binding.recyclerviewCustomLists.addItemDecoration(spacing)
+            }
+        }
     }
 
     private fun initObservers() {
@@ -58,7 +69,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
                             adapter.submitList(movies)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                            showToast(it.exception)
                         }
                         else -> Unit
                     }
@@ -74,7 +85,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
                             customListAdapter.submitList(it.data)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                            showToast(it.exception)
                         }
                         else -> Unit
                     }

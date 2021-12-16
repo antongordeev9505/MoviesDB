@@ -16,6 +16,7 @@ import com.example.moviesdb.databinding.DialogFragmentDiscoverMoviesBinding
 import com.example.moviesdb.domain.model.Genres
 import com.example.moviesdb.presentation.discover.DiscoverViewModel
 import com.example.moviesdb.util.Resource
+import com.example.moviesdb.util.showToast
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -108,7 +109,7 @@ class DiscoverMoviesDialogFragment : DialogFragment(R.layout.dialog_fragment_dis
                     }
 
                     is Resource.Error -> {
-                        Toast.makeText(context, "Problems with internet connection", Toast.LENGTH_SHORT).show()
+                        showToast("Problems with internet connection")
                     }
                     else -> Unit
                 }

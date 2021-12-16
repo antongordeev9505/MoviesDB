@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="@dimen/dimen_2dp"
     app:cardCornerRadius="@dimen/dimen_2dp"
-    android:layout_marginTop="@dimen/dimen_4dp"
-    android:layout_marginBottom="@dimen/dimen_4dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:cardElevation="@dimen/dimen_2dp">
 
     <TextView
-        android:padding="@dimen/dimen_2dp"
         android:id="@+id/custom_list_title"
         style="@style/TitleTextStyleItalic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_2dp"
         tools:text="@string/title_of_list" />
 
 </androidx.cardview.widget.CardView>

@@ -14,6 +14,7 @@ import com.example.moviesdb.databinding.FragmentListMovieBinding
 import com.example.moviesdb.presentation.adapters.ListMovieAdapter
 import com.example.moviesdb.presentation.detail_movie.DetailMovieFragment
 import com.example.moviesdb.util.Resource
+import com.example.moviesdb.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -78,7 +79,7 @@ class ListMovieFragment: Fragment(R.layout.fragment_list_movie), ListMovieAdapte
                             adapter.submitList(movies)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, it.exception, Toast.LENGTH_SHORT).show()
+                            showToast(it.exception)
                         }
                         else -> Unit
                     }

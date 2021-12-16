@@ -35,7 +35,6 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
 
     private fun initUi() {
         binding.apply {
-            //concatinate 2 adapters
             listRecyclerView.adapter = adapter.withLoadStateHeaderAndFooter(
                 header = MovieLoadStateAdapter{ adapter.retry() }, //retry functionality - retry load of another page
                 footer = MovieLoadStateAdapter{ adapter.retry() },
@@ -58,7 +57,6 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover), PopularMoviesAdapt
     }
 
     private fun initLoadState() {
-        //show us the loadState (refresh data set)
         adapter.addLoadStateListener { loadState ->
             binding.apply {
                 //when the list is refreshing with new data set

@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 class InsertCustomListItem(private val repository: MainMovieRepository) {
 
     suspend operator fun invoke(listTitle: String) {
-        Log.d("proverkaUC", listTitle)
         repository.insertCustomListItem(
             CustomList(
                 (0..10000).random(),

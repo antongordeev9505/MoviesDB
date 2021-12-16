@@ -59,24 +59,7 @@ class MainMovieRepositoryImpl(
         dao.deleteMovie(id)
     }
 
-//    override suspend fun insertCustomListItem(listTitle: String): Flow<Resource<String>> = flow {
-//        Log.d("proverkarepo", listTitle)
-//        try {
-//            Log.d("proverkarepo", listTitle)
-//
-//            daoCustomList.insertListItem(CustomListEntity(
-//                2321,
-//                listTitle
-//            ))
-//
-//            emit(Resource.Success("List inserted"))
-//        } catch (error: Exception) {
-//            emit(Resource.Error("It`s a problem..."))
-//        }
-//    }
-
     override suspend fun insertCustomListItem(listItem: CustomList) {
-        Log.d("proverkarepo", listItem.toString())
         daoCustomList.insertListItem(
             listItem.toCustomListEntity()
         )
